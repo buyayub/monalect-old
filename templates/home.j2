@@ -2,14 +2,15 @@
 <html lang="en">
 	<head> 
 		<script src="https://www.google.com/recaptcha/api.js"></script>
-	 <script>
-	   function onSubmit(token) {
-	     document.getElementById("demo-form").submit();
-	   }
-	 </script>
+		<script src="/static/home.js" defer>
+		 <script>
+		   function onSubmit(token) {
+		     document.getElementById("demo-form").submit();
+		   }
+		 </script>
 	</head>
 	<body>
-		<form class="sign-up">
+		<form id="sign-up" class="sign-up">
 			<div class="form-input">
 				<label for="username"> Enter username: </label>
 				<input type="text" name="username" id="username" required>
@@ -21,11 +22,9 @@
 			<div class="form-input">
 				<label for="password"> Enter password: </label>
 				<input type="password" name="password" id="password">
+				<div class="g-recaptcha" data-sitekey="6LfJeYIeAAAAADHppzNesu5NUIMWscKH0OEOXwan"></div>
+				<input type="submit">
 			</div>
-			<button class="g-recaptcha" 
-        		data-sitekey="reCAPTCHA_site_key" 
-			data-callback='onSubmit' 
-			data-action='submit'>Submit</button>
 		</form>
 	</body>
 </html>
