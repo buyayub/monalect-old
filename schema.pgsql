@@ -1,19 +1,17 @@
 BEGIN;
 
-CREATE EXTENSION isn;
-
 CREATE TABLE IF NOT EXISTS users(
-	id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	username VARCHAR(255) UNIQUE NOT NULL,
+	id VARCHAR(32) PRIMARY KEY UNIQUE NOT NULL,
+	username VARCHAR(32) UNIQUE NOT NULL,
 	email TEXT UNIQUE,
 	membership VARCHAR(5) CHECK (membership in ('none', 'basic', 'pro')) NOT NULL,
 	joined DATE NOT NULL DEFAULT CURRENT_DATE,
-	password TEXT NOT NULL
+	passhash TEXT NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS courses (
 	id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
-	user_id INT REFERENCES users (id),
+	user_id VARCHAR(255) REFERENCES users (id),
 	created DATE NOT NULL DEFAULT CURRENT_DATE,
 	description TEXT
 );	
@@ -42,7 +40,6 @@ CREATE TABLE IF NOT EXISTS textbook
 	id INT PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
 	course INT REFERENCES courses (id),
 	book ISBN13
-	
 );
 
 CREATE TABLE IF NOT EXISTS textbook_section
@@ -63,12 +60,29 @@ CREATE TABLE IF NOT EXISTS notebook_section
 
 
 /*
+
 CREATE TABLE IF NOT EXISTS notebook_line
 (
 	course INT REFERENCES courses (id),
 	section INT REFERENCES notebook_section (id),
 	text_content TEXT,
 	text_order INT,
-);*/
+);
+ 
+ */
+
+CREATE TABLE IF NOT EXISTS sessions
+(
+	session_id VARCHAR(255) UNIQUE NOT NULL PRIMARY KEY,
+	user_id VARCHAR(255) REFERENCES users (id),
+	expiry_date DATE
+);
+
+CREATE TABLE IF NOT EXISTS login_attempts
+(
+	user_id VARCHAR(255) REFERENCES users (id),
+	attempts INT NOT NULL DEFAULT 0
+);
+
 
 COMMIT;
