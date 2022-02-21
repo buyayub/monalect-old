@@ -35,7 +35,7 @@ def sql(command, values):
     return response
 
 """
-USER REGISTRATION & LOGIN
+USER REGISTRATION & LOGIN & SESSIONS
 
 To-do:
     1. error if username taken
@@ -76,7 +76,6 @@ def tooManyAttempts(user_id):
 def createSession(user_id):
     session_id = secrets.token_hex(32)
     expiry_date = datetime.datetime.today() + datetime.timedelta(days=7)
-    print(expiry_date.isoformat())
     sql("INSERT INTO sessions VALUES (%s, %s, %s)", (session_id, user_id, expiry_date.isoformat())) #automatically translates it into ISO 8601, or .isoformat()
     return session_id, expiry_date.isoformat()
 
@@ -96,8 +95,10 @@ def validateSession(user_id, session_id):
     ruser_id = row[0][0]
     rsession_id = row[0][1]
     rexpiry_date = row[0][2]
-
     return ((ruser_id == user_id) and (rsession_id == session_id) and (datetime.date.today() < rexpiry_date))
+
+def createCourse("title"):
+    return None
 
 """
 Router
@@ -114,6 +115,9 @@ def login():
 @app.route("/session")
 def session():
     return render_template("session.j2")
+
+@app.route("/course/overview/")
+    return render_template("overview.j2")
 
 @app.route("/api/register", methods=['POST'])
 def apiRegister(): 
@@ -137,20 +141,14 @@ def apiRegister():
         captcha = escape(json_data['recaptcha'])
     except(KeyError):
         abort(400)
-    
-    if not checkCaptcha(captcha):
-        abort(401)
-    if not checkUsername(username):
-        abort(400)
-    if not checkPassword(password):
-        abort(400)
 
-    if checkEmail(email):
-        registerUser(username, password, email)
-        return "", 201
-    elif email == "":
-        registerUser(username, password)
-        return "", 201
+    if checkUsername(username) and checkPassword(password) and checkCaptcha(captcha):
+        if checkEmail(email):
+            registerUser(username, password, email)
+            return "", 201
+        elif email == "":
+            registerUser(username, password)
+            return "", 201
     else: 
         abort(400)
 
@@ -185,6 +183,7 @@ def apiLogin():
     """
      
     json_data = request.get_json()
+
     try:
         username = escape(json_data['username'])
         password = escape(json_data['password'])
@@ -215,3 +214,34 @@ def apiLogin():
 
     return "", 400
 
+@app.route("/api/course/", methods=['GET', 'POST'])
+def apiCourse():
+    return "", 400
+
+@app.route("/api/course/<course_id>", methods=['DELETE', 'GET', 'PUT'])
+def apiCourseId(course_id):
+    return "", 400
+
+"""
+API MADE SPECIAL FOR THE WEBSITE
+"""
+
+@app.route("/api/website/overview", method = 'GET')
+def websiteOverview:
+   return "", 400     
+
+@app.route("/api/website/notebook") 
+def websiteNotebook:
+    return "", 400
+
+@app.route("/api/website/textbook")
+def websiteTextbook:
+    return "", 400
+
+@app.route("/api/website/questions")
+def websiteQuestions:
+    return "", 400
+
+"""
+API MADE FOR 
+"""
