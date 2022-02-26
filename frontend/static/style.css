@@ -1,0 +1,167 @@
+@import url('https://fonts.googleapis.com/css2?family=Zilla+Slab&display=swap');
+
+:root
+{
+	--bgcolor: #141414;
+	--mcolor: #e5e5e5;
+}
+
+body
+{
+	font-family: 'Zilla Slab', serif;
+	font-size: x-large;
+	background-color: var(--bgcolor);
+	color: var(--mcolor);
+	padding: 0px;
+	margin: 0px;
+	height: 100vh;
+}
+
+a
+{
+	text-decoration: none;
+	color: var(--mcolor);
+}
+
+a:hover
+{
+	color: #555555;
+}
+
+
+body.home
+{
+	display: flex;
+	flex-direction: column;
+}
+
+header.home 
+{
+ 	border-bottom: 1px solid #555555;
+	display: flex;
+	flex-direction: row;	
+	align-items: center;
+	justify-content: space-between;
+	padding: 10px;
+}
+
+header.home li 
+{
+	list-style-type: none;
+	display: inline;
+	margin: 10px;
+}
+
+header.home img
+{
+	max-height: 50px;
+	margin-left: 2px;
+
+}
+header.home ul
+{
+	margin: 0px;
+}
+
+main.home
+{
+	display: flex;
+	flex-direction: row;	
+	align-items: center;
+	justify-content: center;
+	padding: 25px;
+	gap: 100px;
+	flex-grow: 1;
+}
+
+main.home img
+{
+	max-height: 70vh;
+}
+
+main.home article
+{
+	font-size: 4.5vh;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+main.home article > *
+{
+	margin: 20px;
+}
+
+main.home article > div
+{
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+main.home article > div > p
+{
+	margin: 5px;
+}
+
+button
+{
+	font-family: 'Zilla Slab', serif;
+	border: 1px solid #777777;
+	background-color: var(--mcolor);
+	color: var(--bgcolor);
+	font-size: 0.8em;
+}
+
+button:hover
+{
+	cursor: pointer;
+	background-color: var(--bgcolor);
+	color: var(--mcolor);
+}
+
+main.home button {
+	padding: 5px 40px 5px 40px;
+}
+
+header.home button{
+	padding: 5px 30px 5px 30px;
+}
+
+#signup > * {
+	margin-bottom: 15px;
+}
+
+#signup {
+	display: flex;
+	flex-direction: column;
+
+}
+
+#signup button {
+	align-self: center;
+	
+}
+
+.form-input {
+	display: flex;
+	color: #777777;
+	flex-direction: column;
+	font-size: 0.8em;
+}
+
+#login {
+	width: 10%;
+	position: absolute;
+	right: 0px;
+	top: 78px;
+	margin: 15px;
+}
+
+@media (max-aspect-ratio: 4/3) {
+	main.home img {
+		display: none;
+	}
+	
+}
+

@@ -2,7 +2,7 @@
 
 (functionality)
 
-1. Home (Log-in, Sign-up) DONE
+1. Home (Log-in, Sign-up) DONE 
 2. Course Overview
 	+ Nav-bar
 3. Notebook
@@ -44,3 +44,9 @@
 6. Test 
 7. Profile
 
+[AFTERTHOUGHTS AND PROCRASTINATIONS]
+
++ return type of error, for example if there is an issue with finding something in the database, return a 404
++ create consistent variable names (verify vs validate) for example
++ ensure only one session at a time
++ turn all the table names in psql into singulars instead of plurals

@@ -1,0 +1,32 @@
+{% extends "root.j2" %}
+{% block body %}
+	<script async src="/static/course.js"></script>
+	{% include "course_header.j2" %}
+	<body class="course">
+		<main>
+			<section id="course-description">
+				<h1 id="course-title"></h2>
+				<p id="course-timestamp"></p>
+				<div>
+				</div>
+			</section>
+			<section class="module" id="lessons">
+				<h2>Lessons</h2>
+				<div>
+				</div>
+			</section>
+		</main>
+		<aside>
+			<section class="module" id="goals">
+				<h2>Goals</h2>
+				<div>
+				</div>
+			</section>	
+			<section class="module" id="materials">
+				<h2>Learning Materials<h2>
+				<div>
+				</div>
+			</section>
+		</aside>
+	</body>
+{% endblock body %}

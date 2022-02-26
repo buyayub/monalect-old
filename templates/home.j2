@@ -2,7 +2,7 @@
 <html lang="en">
 	<head> 
 		<script src="https://www.google.com/recaptcha/api.js"></script>
-		<script src="/static/home.js" defer>
+		<script src="/static/home.js" async>
 		 <script>
 		   function onSubmit(token) {
 		     document.getElementById("demo-form").submit();
@@ -10,7 +10,7 @@
 		 </script>
 	</head>
 	<body>
-		<form id="sign-up" class="sign-up">
+		<form id="signup" class="signup">
 			<div class="form-input">
 				<label for="username"> Enter username: </label>
 				<input type="text" name="username" id="username" required>

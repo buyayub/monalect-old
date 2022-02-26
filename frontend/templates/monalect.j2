@@ -1,0 +1,27 @@
+{% extends "root.j2" %}
+{% block body %}
+	<body class="monalect">
+		<script src="/static/monalect.js" defer></script>
+		<header class="monalect">
+			<svg width="39" height="23" viewBox="0 0 39 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<rect width="25" height="3" fill="white"/>
+				<rect y="20" width="25" height="3" fill="white"/>
+				<rect y="10" width="25" height="3" fill="white"/>
+				<path d="M31 4L37 11.5L31 19" stroke="white" stroke-width="3"/>
+			</svg>
+			<p id="user"></p>
+		</header>
+		<nav class="monalect">
+			<ul>
+				<li><a href="/monalect">Home</a></li>
+			</ul>
+			<ul id="course_list">
+			</ul>
+		</nav>
+		<main class="monalect">
+			<div>
+			</div>
+			<button id="create_course">Create Course</button>
+		</main>
+	</body>
+{% endblock body %}
