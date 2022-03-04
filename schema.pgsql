@@ -23,8 +23,7 @@ DROP TABLE lesson CASCADE;
 CREATE TABLE IF NOT EXISTS lesson (
 	id VARCHAR(32) PRIMARY KEY UNIQUE NOT NULL,
 	course_id VARCHAR(32) REFERENCES courses (id),
-	title VARCHAR(255) NOT NULL,
-	lesson_order INT
+	title VARCHAR(255) NOT NULL
 );
 
 DROP TABLE question CASCADE;
@@ -39,10 +38,13 @@ CREATE TABLE IF NOT EXISTS question (
 DROP TABLE textbook CASCADE;
 CREATE TABLE IF NOT EXISTS textbook
 (
-	id VARCHAR(32) PRIMARY KEY UNIQUE NOT NULL,
+	id VARCHAR(16) PRIMARY KEY UNIQUE NOT NULL,
 	course_id VARCHAR(32) REFERENCES courses (id),
+	filename VARCHAR(16),
+	author VARCHAR(255),
 	book ISBN13,
-	pages INT
+	title VARCHAR(255) DEFAULT NULL,
+	pages INT DEFAULT 0 
 );
 
 DROP TABLE textbook_section CASCADE;
@@ -58,10 +60,18 @@ DROP TABLE notebook_section CASCADE;
 CREATE TABLE IF NOT EXISTS notebook_section
 (
 	id VARCHAR(32) PRIMARY KEY UNIQUE NOT NULL,
+	lesson_id VARCHAR(32) REFERENCES lesson(id),
 	course_id VARCHAR(32) REFERENCES courses (id),
 	text_content TEXT
 );
 
+DROP TABLE IF EXISTS goals;
+CREATE TABLE IF NOT EXISTS goals(
+	course_id VARCHAR(32) REFERENCES courses(id),
+	goal VARCHAR(16) CHECK (goal in ('notebook', 'question', 'test')) NOT NULL,
+	complete BOOL,
+	metric INT
+);
 
 /*
 

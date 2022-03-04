@@ -1,4 +1,5 @@
 from flask import Flask, render_template, jsonify, request, escape, abort, Response
+from werkzeug.utils import secure_filename
 import datetime
 import psycopg2
 import bcrypt
@@ -6,8 +7,14 @@ import requests
 import re
 import secrets
 import string
+import traceback
+import os
+
+UPLOAD_FOLDER = "/home/zheng/projects/monalect/textbooks/"
+ALLOWED_EXTENSIONS = {'pdf'}
 
 app = Flask(__name__, static_url_path='/static/')
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 RECAPTCHA_PRIVATE_KEY = "6LfJeYIeAAAAAO-PXK1qRuRAK_37acdTrKO7y0Zo"
 
@@ -40,12 +47,16 @@ def generateKey(length):
     key = ''.join(secrets.choice(alphabet) for i in range(length))
     return key
 
-def makeCORS(response):
+def makeCORS(response, methods='GET,POST,OPTIONS'):
     response.headers.add('Access-Control-Allow-Origin', 'http://localhost:5000')
     response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
     response.headers.add('Access-Control-Allow-Credentials', 'true')
+    response.headers.add('Access-Control-Allow-Methods', methods)
     return response
 
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 """
 USER REGISTRATION & LOGIN & SESSIONS
 
@@ -124,6 +135,7 @@ def validateSession(user_id, session_id):
 
     return validated
 
+
 """
 Course CORS
 """
@@ -141,10 +153,11 @@ def createCourse(user_id):
     return course_id
 
 def getCourse(course_id):
-    course = sql("SELECT title, description FROM courses WHERE id = %s", (course_id,))
+    course = sql("SELECT title, description, created FROM courses WHERE id = %s", (course_id,))
     title = course[0][0]
     description = course[0][1]
-    return {'title': title, 'description' : description}
+    created = course[0][2]
+    return {'title': title, 'description' : description, 'created' : created}
 
 def getCourses(user_id):
     data = sql ("SELECT id, title, description FROM courses WHERE user_id = %s", (user_id,))
@@ -167,25 +180,78 @@ def updateCourseTitle(course_id, title):
 # LESSON
 
 def getLessons(course_id):
-    title = sql("SELECT title FROM lesson WHERE course_id = %s", (course_id,))
-    question_num = sql("")
-    lessons = []
+    lessons = sql("SELECT id, title FROM lesson WHERE course_id = %s", (course_id,))
+    payload = []
     for i in lessons:
-        lesson.append({ "title" : i[0]})
-    return lessons
+        lesson_id = i[0]
+        textbook_sections = sql("SELECT book, textbook.title, textbook_section.textbook, start_page, end_page FROM textbook_section, textbook WHERE lesson_id=%s AND textbook.id = textbook", (lesson_id,))
+        question_count = sql("SELECT COUNT(*) FROM question WHERE course_id = %s AND question.lesson = %s", (course_id, lesson_id))[0][0]
+        notebook_words = sql("SELECT sum(array_length(regexp_split_to_array(text_content ,'\s'),1)) FROM notebook_section WHERE course_id = %s AND lesson_id = %s", (course_id, lesson_id))[0][0]
+        payload.append({ "id": lesson_id, "title" : i[1], "textbook_sections": textbook_sections, "question_count" : question_count, "notebook_words" : notebook_words})
+    return payload
 
 def getLessonId(course_id, lesson_order):
     lesson_id = sql("SELECT title FROM lesson WHERE (course_id = %s AND lesson_order = %s)", (course_id, lesson_order))
     return lesson_id     
 
-def createLesson(course_id, title, lesson_order):
-    sql("INSERT INTO courses VALUES (DEFAULT, %s, %s, %s)", (course_id, title, lesson_order))
+def deleteLesson(lesson_id):
+    sql("DELETE FROM lesson WHERE id = %s", (lesson_id,))
     return None
 
-"""
-Router
-"""
+def createLesson(course_id, title):
+    lesson_id = generateKey(32)
+    sql("INSERT INTO lesson VALUES (%s, %s, %s)", (lesson_id, course_id, title))
+    return lesson_id
 
+def updateLessonOrder(lesson_order, lesson_id):
+    sql("UPDATE lesson SET lesson_order = %s WHERE id = %s", (lesson_order, lesson_id))
+    return None
+
+def updateLessonTitle(lesson_title, lesson_id):
+    sql("UPDATE lesson SET title = %s WHERE id = %s", (lesson_title, lesson_id))
+    return None
+
+# TEXTBOOK 
+
+def createTextbook(course_id, isbn, title, author, pages, filename=None):
+    textbook_id = generateKey(16)
+    sql("INSERT INTO textbook VALUES (%s, %s, %s, %s, %s, %s, %s)", (textbook_id, course_id, filename, author, isbn, title, pages))
+    
+    return {"id" : textbook_id, "author" : author, "pages" : pages}
+
+def createTextbookSection(textbook_id, lesson_id, start_page, end_page):
+    sql("INSERT INTO textbook_section VALUES (%s, %s, %s, %s)", (textbook_id, lesson_id, start_page, end_page))
+    return None
+
+def getTextbook(textbook_id):
+    textbook = sql("select book, title, pages from textbook where id = %s", (textbook_id,))
+    return none
+
+def getTextbooks(course_id):
+    textbooks = sql("SELECT id, book, title, pages from TEXTBOOK where course_id = %s", (course_id,))
+    return textbooks
+
+def getTextbookSections(lesson_id):
+    textbook_sections = sql("SELECT book, textbook.title, textbook_section.textbook, start_page, end_page FROM textbook_section, textbook WHERE lesson_id=%s AND textbook.id = textbook_section.textbook", (lesson_id,))
+    return textbook_sections
+
+def checkISBN(isbn):
+   return (re.fullmatch(r'^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})[- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)(?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$'))
+
+# GOALS
+
+def getGoals(course_id):
+    goals = sql("SELECT goal, metric FROM goals WHERE course_id=%s", (course_id,))
+    return goals
+
+def createGoal(course_id, goal_type, metric):
+    sql("INSERT INTO goals VALUES (%s, %s, %s)", (course_id, goal_type, metric))
+    return None
+
+
+"""
+API Router
+"""
 
 @app.route("/api/register", methods=['POST', 'OPTIONS'])
 def apiRegister(): 
@@ -326,6 +392,77 @@ def apiCourse():
 def apiCourseId(course_id):
     return "", 400
 
+@app.route("/api/course/<course_id>/lesson", methods=['OPTIONS', 'GET', 'POST'])
+def apiLesson(course_id):
+    if (request.method == 'POST'):
+        user_id = escape(request.cookies.get('user_id'))
+        session_id = escape(request.cookies.get('session_id'))
+        if (validateSession(user_id, session_id)) and verifyCourse(course_id, user_id):
+            json_data = request.get_json()
+            title = escape(json_data['title'])
+            lesson_id = createLesson(course_id, title)
+            response = jsonify({'id' : lesson_id, 'title' : title})
+            response = makeCORS(response)
+            return response, 201
+    elif request.method == 'OPTIONS':
+        response = Response("")
+        response = makeCORS(response)
+        return response, 201
+    return "", 400 
+
+@app.route("/api/course/<course_id>/lesson/<lesson_id>", methods=['OPTIONS', 'POST', 'DELETE'])
+def apiLessonId(course_id, lesson_id):
+    if (request.method == 'POST'):
+        return "", 404
+    elif (request.method == 'DELETE'):
+        user_id = escape(request.cookies.get('user_id'))
+        session_id = escape(request.cookies.get('session_id'))
+        if (validateSession(user_id, session_id)) and verifyCourse(course_id, user_id):
+            deleteLesson(lesson_id)
+            response = Response("")
+            response = makeCORS(response)
+            return response, 201
+    elif request.method == 'OPTIONS':
+        response = Response("")
+        response = makeCORS(response, "OPTIONS,POST,DELETE")
+        return response, 201
+
+@app.route("/api/<course_id>/textbook", methods=['OPTIONS', 'POST']) 
+def apiTextbook():
+    try:
+        if (request.method == 'POST'):
+            title = escape(request.form['title'])
+            isbn = escape(request.form['ISBN'])
+            pages = escape(request.form['pages'])
+            author = escape(request.form['author'])
+            if not checkISBN(isbn):
+                return "", 401
+
+            if 'textbook' in request.files:
+                pdf_file = request.files['textbook']
+                if (pdf_file.filename != ''):
+                    filename = generateKey(16)
+                    pdf_file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+                    data = createTextbook(course_id, isbn, title, author, pages, filename)
+                    response = jsonify(data)
+                    response = makeCORS(response)
+                    return response, 201
+            else:
+                data = createTextbook(course_id, isbn, title, author, pages)
+                response = jsonify(data)
+                response = makeCORS(response)
+                return response, 201
+
+                        
+            return "", 401
+        elif request.method == 'OPTIONS':
+            response = Response("")
+            response = makeCORS(response)
+            return response, 201
+    except Exception as e: 
+        print(traceback.format_exc())
+        return "", 400
+    
 """
 API INITIAL LOAD FOR THE WEBSITE
 """
@@ -346,20 +483,36 @@ def websiteOverview():
         return "", 400
     return "", 400
 
-@app.route("/api/website/course", methods=['GET'])
-def websiteCourse():
-    return "", 400     
+@app.route("/api/website/course/<course_id>", methods=['GET'])
+def websiteCourse(course_id):
+    try:
+        user_id = escape(request.cookies.get('user_id'))
+        session_id = escape(request.cookies.get('session_id'))
+        if (validateSession(user_id, session_id) and verifyCourse(course_id, user_id)):
+            course = getCourse(course_id)
+            lessons = getLessons(course_id)
+            textbooks = getTextbooks(course_id)
+            goals = getGoals(course_id)
+            payload = {'username': getUsername(user_id), 'course': course, 'lessons': lessons, 'textbooks': textbooks, 'goals' : goals}
+            response = jsonify(payload)
+            response = makeCORS(response)
+            return response, 201
+        else:
+            return "", 400
+    except Exception as e:
+        print(traceback.format_exc())
+        return "", 400     
 
-@app.route("/api/website/notebook") 
-def websiteNotebook():
+@app.route("/api/website/<course_id>/notebook") 
+def websiteNotebook(course_id):
     return "", 400
 
-@app.route("/api/website/textbook")
-def websiteTextbook():
+@app.route("/api/website/<course_id>/textbook")
+def websiteTextbook(course_id):
     return "", 400
 
-@app.route("/api/website/questions")
-def websiteQuestions():
+@app.route("/api/website/<course_id>/questions")
+def websiteQuestions(course_id):
     return "", 400
 
 """

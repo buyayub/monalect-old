@@ -1,13 +1,20 @@
 <header class="home">
-	<a href="/"><img src="/static/logo.webp" alt="the monalect logo"></a>
+	<a id="nav-expand" class="expand">
+			<svg width="39" height="23" viewBox="0 0 39 23" fill="none" xmlns="http://www.w3.org/2000/svg">
+				<rect width="25" height="3" fill="white"/>
+				<rect y="20" width="25" height="3" fill="white"/>
+				<rect y="10" width="25" height="3" fill="white"/>
+				<path d="M31 4L37 11.5L31 19" stroke="white" stroke-width="3"/>
+			</svg>
+	</a>
 	<nav>
 		<ul>
-			<li><a href="./overview">About</a></li>
-			<li><a href="./notebook">Docs</a></li>
-			<li><a href="./textbook">Contact</a></li>
-			<li><a href="./questions">Contact</a></li>
-			<li><a href="./test">Contact</a></li>
+			<li><a href="./overview">Overview</a></li>
+			<li><a href="./notebook">Notebook</a></li>
+			<li><a href="./textbook">Textbook</a></li>
+			<li><a href="./questions">Questions</a></li>
+			<li><a href="./test">Test</a></li>
 		</ul>
 	</nav>
-	<div>{{user}}</div>
+	<p class="user_profile"></p>
 </header>

@@ -13,6 +13,13 @@
 			<section class="module" id="lessons">
 				<h2>Lessons</h2>
 				<div>
+					<p id="lessons_empty">empty</p>
+					<div id="lesson_cards">
+					</div>
+					<form id="add_lesson" data-lesson="1">
+						<button type="submit">+</button>
+						<input type="text" name="title" autocomplete="off" placeholder="Add Title...">
+					</form>
 				</div>
 			</section>
 		</main>
@@ -20,13 +27,40 @@
 			<section class="module" id="goals">
 				<h2>Goals</h2>
 				<div>
+					<p id="goals_empty">empty</p>
+					<button id="add_goal">+</button>
 				</div>
 			</section>	
 			<section class="module" id="materials">
-				<h2>Learning Materials<h2>
+				<h2>Learning Materials</h2>
 				<div>
+					<p id="materials_empty">empty</p>
+					<div id="material_cards"></div>
+					<button id="add_material">+</button>
 				</div>
 			</section>
 		</aside>
+		<button id="modify">Modify</button>
+		<button id="save">Save</button>
+		<button id="cancel">Cancel</button>
+		<div class="aside">
+			<button id="finish">Finish</button>
+			<button id="delete">Delete</button>
+		</div>
+		<form id="material_form" enctype="multipart/form-data" method="post">
+			<label>Title</label>
+			<input name="title" type="text" autocomplete="" required>
+			<label>Author</label>
+			<input name="author" type="text" autocomplete="" required>
+			<label>ISBN</label>
+			<input name="ISBN" type="text" autocomplete="" required>
+			<label>Pages</label>
+			<input name="pages" type="text" autocomplete="" required>
+			<label>Textbook</label>
+			<input name="textbook" type="file" autocomplete="off"> 
+			<button id="add_textbook" type="submit">Add Textbook</button>
+			<p class="success">Success!</p>
+			<p class="failure">Error</p>
+		</form>		
 	</body>
 {% endblock body %}

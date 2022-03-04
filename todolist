@@ -2,12 +2,28 @@
 
 (functionality)
 
-1. Home (Log-in, Sign-up) DONE 
-2. Course Overview
+1. Home (Log-in, Sign-up) 
+	+ Log-in
+	+ Sign-up
+	- User clicks a button to go to the dashboard if they're already in logged in/in a session
+2. Courses DONE
+	+ Course cards
+	+ Create course
 	+ Nav-bar
+	- Delete course with verification
+2.5 Course overview
+	- Making links to course
+	- Edit view
+	- Study view
 3. Notebook
+	- Section text editor
+	- Scroll viewer
+	- Open Textbook
 4. Textbook
+	- Basic PDF viewer
+	- Open notebook
 5. Question
+	- 
 6. Test 
 7. Profile
 
@@ -44,9 +60,20 @@
 6. Test 
 7. Profile
 
+
 [AFTERTHOUGHTS AND PROCRASTINATIONS]
 
-+ return type of error, for example if there is an issue with finding something in the database, return a 404
-+ create consistent variable names (verify vs validate) for example
+- return type of error, for example if there is an issue with finding something in the database, return a 404, and make it known to the user what went wrong (no direct display of error code, that's a XSS danger)
+- create consistent variable names (verify vs validate) for example
 + ensure only one session at a time
-+ turn all the table names in psql into singulars instead of plurals
+- turn all the table names in psql into singulars instead of plurals
+- comb through code for any bad words i put
+- optimize multiple SQL statements so that they don't connect and close every single statement
+- make calculations the responsibiliy of the client app, letting backend be purely a vessel for retrieving information (for example, making goals calculated on the client side)
+- save states in the client-side so when they open the app, the javascript can directly access the local data storage, and then call backend asynchronously to validate
+- convert CORS and API calls to subdomain system (api.monalect.com)
+- password confirmation
+- password validation (8 characters, 1 uppercase, 1 number) on frontend
+- convert innerHTML to createElement
+- asynchronous editing/saving
+- use document fragment where you can
