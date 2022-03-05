@@ -16,7 +16,7 @@
 					<p id="lessons_empty">empty</p>
 					<div id="lesson_cards">
 					</div>
-					<form id="add_lesson" data-lesson="1">
+					<form id="add_lesson">
 						<button type="submit">+</button>
 						<input type="text" name="title" autocomplete="off" placeholder="Add Title...">
 					</form>
@@ -47,7 +47,7 @@
 			<button id="finish">Finish</button>
 			<button id="delete">Delete</button>
 		</div>
-		<form id="material_form" enctype="multipart/form-data" method="post">
+		<form class="pop_up" id="material_form" enctype="multipart/form-data" method="post">
 			<label>Title</label>
 			<input name="title" type="text" autocomplete="" required>
 			<label>Author</label>
@@ -61,6 +61,19 @@
 			<button id="add_textbook" type="submit">Add Textbook</button>
 			<p class="success">Success!</p>
 			<p class="failure">Error</p>
-		</form>		
+		</form>
+		<form class="pop_up" id="material_section" enctype="multipart/form-data" method="post" data-id="">	
+			<label>Textbook</label>
+			<select id="material_select" name="textbook">
+			</select>
+			<label>Starting Page</label>
+			<input type="number" name="start_page">
+			<label>Ending Page</label>
+			<input type="number" name="end_page">
+			<button type="submit">Add</button>
+		</form>
+		<form class="pop_up" id="goal_form">
+
+		</form>
 	</body>
 {% endblock body %}

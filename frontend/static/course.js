@@ -34,6 +34,13 @@ add_material = document.querySelector("#add_material")
 add_material.style.display = "none"
 
 document.querySelector("#material_form").style.display = "none"
+document.querySelector("#material_section").style.display= "none"
+
+edit_elements = document.querySelectorAll(".edit")
+for (element of edit_elements)
+{
+	element.style.display = "none"
+}
 
 function getCourseId() {
 	URL = window.location.pathname
@@ -57,6 +64,13 @@ function initDisplay(data)
 	{
 		displayLesson(lesson)
 	}
+
+	for (textbook of data['textbooks'])
+	{
+		root = document.querySelector("#material_cards")
+		displayBook(textbook, root)
+		listTextbook(textbook)
+	}
 }
 
 fetch(`${API_URL}/api/website/course/${COURSE_ID}`,  {
@@ -70,6 +84,7 @@ fetch(`${API_URL}/api/website/course/${COURSE_ID}`,  {
 })
 .then((data) =>
 {
+	console.log(data)
 	lessons = data['lessons']
 	goals = data['goals']
 	textbooks = data['textbooks']
@@ -123,7 +138,7 @@ function deleteLesson()
 {
 	lesson = this.parentElement
 	lesson_id = lesson.dataset.id
-	request_body = {method: "delete"}
+
 	fetch(`${API_URL}/api/course/${COURSE_ID}/lesson/${lesson_id}`, {
 		method : 'DELETE',
 		credentials: "include",
@@ -137,6 +152,43 @@ function deleteLesson()
 	})
 }
 
+function deleteTextbook()
+{
+	textbook = this.parentElement.parentElement
+	textbook_id = textbook.dataset.id 
+
+	fetch(`${API_URL}/api/course/${COURSE_ID}/textbook`, {
+		method : 'DELETE',
+		credentials: 'include'
+	})
+	.then((response) =>
+	{
+		if (response.ok)
+		{
+			textbook.remove()
+		}
+	})
+}
+
+function showMaterialSection()
+{
+	material_section = document.querySelector("#material_section")
+	material_form = document.querySelector("#material_form")
+
+	material_section.setAttribute("data-id",  this.parentElement.dataset.id)
+
+	if (material_section.style.display != "none")
+	{
+		material_section.style.display = "none"
+	}
+	else
+	{
+		material_section.style.display = ""
+		material_form.style.display = "none"
+	}
+}
+
+//is DOM manipulation supposed to be this verbose
 function displayLesson(lesson)
 {
 	lesson_cards = document.querySelector("#lesson_cards")
@@ -149,6 +201,8 @@ function displayLesson(lesson)
 	delete_lesson.classList.add("delete_lesson")
 	delete_lesson.classList.add("edit")
 
+
+	// Find a less stupid way for this 
 	if (document.querySelector("#modify").style.display !== "none")
 		delete_lesson.style.display = "none";
 
@@ -158,6 +212,20 @@ function displayLesson(lesson)
 	
 	const lesson_material = document.createElement("div")
 	lesson_material.className = "lesson_material"
+
+	for (section of lesson['textbook_sections'])
+	{
+		displaySection(section, lesson_material)
+	}
+
+	lesson_add_material = document.createElement("button")
+	lesson_add_material.innerText = "+"
+	lesson_add_material.classList.add("edit") 
+	lesson_add_material.classList.add("lesson_add_material")
+	lesson_add_material.addEventListener("click", showMaterialSection) 
+
+	if (document.querySelector("#modify").style.display !== "none")
+		lesson_add_material.style.display = "none";
 
 	const lesson_questions = document.createElement("div")	
 	lesson_questions.className = "lesson_questions"
@@ -185,11 +253,24 @@ function displayLesson(lesson)
 	lesson_stats = document.createElement("div")
 	lesson_stats.className = "lesson_stats"
 
+
 	lesson_questions.append(lesson_question_image, lesson_question_stat)
 	lesson_words.append(lesson_words_image, lesson_words_stat)
 	lesson_stats.append(lesson_questions, lesson_words)
-	root.append(delete_lesson, lesson_title, lesson_material, lesson_stats)
+	root.append(delete_lesson, lesson_title, lesson_material, lesson_add_material, lesson_stats)
 	lesson_cards.append(root)
+}
+
+function displaySettings()
+{
+	material_settings = document.createElement("div")
+	material_settings.className("settings")
+
+	delete_material = document.createElement("p")
+	delete_material.className("settings_delete")
+	delete_material.addEventListener("click",  deleteTextbook)
+
+	material_settings.attach(delete_material)
 }
 
 
@@ -221,21 +302,37 @@ add_lesson.addEventListener("submit", (e) =>
 	})
 })
 
-
 add_material.addEventListener("click", () =>
 {
 	document.querySelector("#material_form").style.display = ""
 	document.querySelector("#material_form .success").style.display="none"
 	document.querySelector("#material_form .failure").style.display="none"
+	document.querySelector("#material_section").style.display = "none"
 })
+
+add_goal.addEventListener("click", () => 
+{
+	
+}
+
+function listTextbook(data)
+{
+	material_select = document.querySelector("#material_select")
+	textbook_option = document.createElement("option")	
+	textbook_option.value= data['id']
+	textbook_option.innerText = data['title']
+
+	material_select.append(textbook_option)
+}
 
 function displayBook(data, root)
 {
 	material_card = document.createElement("div")
 	material_card.className = "material_card"
+	material_card.setAttribute("data-id", data['id'])
 
 	material_image = document.createElement("img")
-	material_image.src = (data["isbn"] == null) ? "/static/textbook_red.svg" : "/static/textbook.svg"
+	material_image.src = (data["filename"] == null) ? "/static/textbook_red.svg" : "/static/textbook.svg"
 
 	material_text = document.createElement("div")
 	material_text.className = "material_text"
@@ -252,6 +349,10 @@ function displayBook(data, root)
 	material_pages.className = "material_pages"
 	material_pages.innerText = `${data["pages"]}pg`
 
+	material_settings = document.createElement("img")
+	material_settings.className = "material_settings" 
+	material_settings.addEventListener("click", displaySettings)
+
 	material_text.append(material_title, material_author)
 	material_card.append(material_image, material_text, material_pages)
 	root.append(material_card)
@@ -263,26 +364,83 @@ material_form.addEventListener("submit", (e) =>
 	e.preventDefault();
 	var form_data = new FormData(material_form)
 	request = new XMLHttpRequest();
-	request.open("POST", `${API_URL}/api/textbook`)
+	request.open("POST", `${API_URL}/api/${COURSE_ID}/textbook`)
 	request.responseType = 'json'
+	request.withCredentials = true
 	request.onload = () => 
 	{
-		if (request.status == 202)
+		if (request.status == 201)
 		{
 			material_form.reset()
-			document.querySelector("#material_form.failure").style.display="none"
-			document.querySelector("#material_form.success").style.display=""
+			document.querySelector("#material_form .failure").style.display="none"
+			document.querySelector("#material_form .success").style.display=""
 			response = request.response
 			root = document.querySelector("#material_cards")
 			displayBook(response, root)
+			listTextbook(response)
 		}
 		else
 		{
-			document.querySelector("#material_form.success").style.display="none"
-			document.querySelector("#material_form.failure").style.display=""
+			document.querySelector("#material_form .success").style.display="none"
+			document.querySelector("#material_form .failure").style.display=""
 		}
 	}
 	request.send(form_data)
 })
 
+material_section = document.querySelector("#material_section")
+material_section.addEventListener("submit", (e) =>
+{
+	e.preventDefault();
+	lesson_id = material_section.dataset.id
+
+	var form_data = new FormData(material_section)
+	payload = {
+		textbook_id : form_data.get('textbook'),
+		lesson_id : lesson_id,
+		start_page : form_data.get('start_page'),
+		end_page : form_data.get('end_page')
+	}
+
+	fetch(`${API_URL}/api/${COURSE_ID}/section/${lesson_id}`,{
+		method: "POST",
+		headers : {"Content-Type" : "application/json"},
+		credentials: "include",
+		body: JSON.stringify(payload)
+	})
+	.then((response) =>
+	{
+		if (response.ok)
+		{
+			return response.json()
+		}
+	})
+	.then((data) =>
+	{
+		lesson_material = document.querySelector(`div[data-id=${lesson_id}] .lesson_material`)
+		displaySection(data, lesson_material)
+	})
+})
+
+
+function displaySection(data, root)
+{
+	section_img = document.createElement("img")	
+	section_img.src = "/static/textbook.svg"
+	section_img.className = "section_img"
+
+	section_text = document.createElement("div")
+	section_text.className = "section_text"
+
+	section_title = document.createElement("h3")
+	section_title.className = "section_title"
+	section_title.innerText = data['title']
+
+	section_pages = document.createElement("p")
+	section_pages.className = "section_pages"
+	section_pages.innerText = `pg. ${data['start_page']}-${data['end_page']}`
+
+	section_text.append(section_title, section_pages)
+	root.append(section_img, section_text)
+}
 
