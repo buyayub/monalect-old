@@ -85,3 +85,5 @@ x password confirmation [DISCARDED - use show password instead]
 - use Open Textbook Library's API to fill in meta-data for textbooks
 - use ISBNs + Course for identification of material, with isbns constrained by being unique to certian courses
 - remove server type for security purposes (don't include 'made with jinja2' as well in the meta headers)
+- allow user to get goals automatically generated client-side
+- pdf sanitation

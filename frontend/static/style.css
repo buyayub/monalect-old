@@ -165,12 +165,7 @@ header.home button{
 	
 }
 
-.hidden
+.hide
 {
-	display: hidden;
-}
-
-.shown
-{
-	display: inherit;
+	display: none;
 }

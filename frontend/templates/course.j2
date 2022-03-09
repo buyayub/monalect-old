@@ -1,12 +1,12 @@
 {% extends "root.j2" %}
 {% block body %}
-	<script async src="/static/course.js"></script>
+	<script type="module" src="/static/overview.js"></script>
 	{% include "course_header.j2" %}
 	<body class="course">
 		<main>
-			<section id="course-description">
-				<h1 id="course-title"></h2>
-				<p id="course-timestamp"></p>
+			<section id="course_description">
+				<h1 id="course_title"></h2>
+				<p id="course_timestamp"></p>
 				<div>
 				</div>
 			</section>
@@ -16,7 +16,7 @@
 					<p id="lessons_empty">empty</p>
 					<div id="lesson_cards">
 					</div>
-					<form id="add_lesson">
+					<form class="edit" id="add_lesson">
 						<button type="submit">+</button>
 						<input type="text" name="title" autocomplete="off" placeholder="Add Title...">
 					</form>
@@ -24,27 +24,26 @@
 			</section>
 		</main>
 		<aside>
-			<section class="module" id="goals">
+			<!-- <section class="module" id="goals">
 				<h2>Goals</h2>
 				<div>
 					<p id="goals_empty">empty</p>
 					<button id="add_goal">+</button>
 				</div>
-			</section>	
+			</section> -->
 			<section class="module" id="materials">
 				<h2>Learning Materials</h2>
 				<div>
 					<p id="materials_empty">empty</p>
 					<div id="material_cards"></div>
-					<button id="add_material">+</button>
+					<button class="edit" id="add_material">+</button>
 				</div>
 			</section>
 		</aside>
 		<button id="modify">Modify</button>
-		<button id="save">Save</button>
-		<button id="cancel">Cancel</button>
-		<div class="aside">
-			<button id="finish">Finish</button>
+		<button id="done" class="edit">Done</button>
+		<div class="aside edit">
+			<button id="finish">Archive</button>
 			<button id="delete">Delete</button>
 		</div>
 		<form class="pop_up" id="material_form" enctype="multipart/form-data" method="post">
@@ -71,9 +70,6 @@
 			<label>Ending Page</label>
 			<input type="number" name="end_page">
 			<button type="submit">Add</button>
-		</form>
-		<form class="pop_up" id="goal_form">
-
 		</form>
 	</body>
 {% endblock body %}

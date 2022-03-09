@@ -1,45 +1,121 @@
-API_URL = "http://localhost:9000"
-EDIT = false
+const API_URL = "http://localhost:9000"
+const COURSE_ID = getCourseId()
 
-save_button = document.querySelector("#save")
-save_button.style.display = "none"
+website = {
+	material : {
+		display : document.getElementById("materials"),
+		form : document.getElementById("material_form"),
+		success: document.querySelector("#material_form .success"),
+		failure: document.querySelector("#material_form .failure"),
+		select : document.getElementById("material_select"),
+		empty : document.getElementById("materials_empty"),
+		cards : document.getElementById("material_cards"),
+		add : document.getElementById("add_material")
+	},
+	lesson : {
+		display : document.getElementById("lessons"),
+		empty : document.getElementById("lessons_empty"),
+		add : document.getElementById("add_lesson"),
+		form : document.getElementById("material_section"),
+		cards : document.getElementById("lesson_cards"),
+	},
+	modify : document.getElementById("modify"),
+	done : document.getElementById("done"),
+	delete : document.getElementById("delete"),
+	finish : document.getElementById("finish"),
+	course : {
+		title : document.getElementById("course_title"),
+		created : document.getElementById("course_timestamp"),
+		description: document.querySelector("#course_description div")
+	},
+	popup : document.getElementsByClassName("pop_up"),
+	edit : document.getElementsByClassName("edit")
+}
 
-finish_button = document.querySelector("#finish")
-finish_button.style.display = "none"
 
-delete_button = document.querySelector("#delete")
-delete_button.style.display = "none"
-
-cancel_button = document.querySelector("#cancel")
-cancel_button.style.display = "none"
-
-modify_button = document.querySelector("#modify")
-
-lessons_empty = document.querySelector("#lessons_empty")
-lessons_empty.style.display = "none"
-
-goals_empty = document.querySelector("#goals_empty")
-goals_empty.style.display = "none"
-
-materials_empty = document.querySelector("#materials_empty")
-materials_empty.style.display = "none"
-
-add_lesson = document.querySelector("#add_lesson")
-add_lesson.style.display = "none"
-
-add_goal = document.querySelector("#add_goal")
-add_goal.style.display = "none"
-
-add_material = document.querySelector("#add_material")
-add_material.style.display = "none"
-
-document.querySelector("#material_form").style.display = "none"
-document.querySelector("#material_section").style.display= "none"
-
-edit_elements = document.querySelectorAll(".edit")
-for (element of edit_elements)
+function lessonDisplay(data, root)
 {
-	element.style.display = "none"
+	card = document.createElement("div")
+	card.setAttribute("data-id", data['id'])
+
+	const delete_lesson = document.createElement("button")
+	delete_lesson.innerText = "-"
+	delete_lesson.addEventListener("click", deleteLesson)
+	delete_lesson.classList.add("delete_lesson", "edit")
+
+	// Find a less stupid way for this 
+	if (!website.modify.classList.contains("hide"))
+		delete_lesson.classList.add("hide");
+
+	const title  = document.createElement("h2")
+	title.innerText = data['title']
+	title.className = "lesson_title"
+	
+	const material = document.createElement("div")
+	material.className = "lesson_material"
+
+	for (section of data['textbook_sections'])
+		lesson.section.display(section, material);
+
+	add_material = document.createElement("button")
+	add_material.innerText = "+"
+	add_material.classList.add("edit", "lesson_add_material")
+	add_material.addEventListener("click", lesson.section.showForm) 
+
+	//if does NOT contain
+	if (!website.modify.classList.contains("hide")) 
+		add_material.classList.add("hide");
+
+	const questions = document.createElement("div")	
+	questions.className = "lesson_questions"
+	
+	const question_stat = document.createElement("p")
+	question_stat.innerText = data['question_count']	
+	question_stat.className = "lesson_stat_data"
+
+	const lesson_question_image = document.createElement("img")
+	lesson_question_image.src = "/static/question.svg"
+	lesson_question_image.className = "lesson_stat_image"
+
+	const lesson_words = document.createElement("div")
+	lesson_words.className = "lesson_words"
+
+	words = data['notebook_words'] == null ? 0 : data['notebook_words']
+	words_stat = document.createElement("p")	
+	words_stat.innerText = words
+	words_stat.className = "lesson_stat_data"
+
+	words_image= document.createElement("img")
+	words_image.src = "/static/question.svg"
+	words_image.className = "lesson_stat_image"
+
+	stats = document.createElement("div")
+	stats.className = "lesson_stats"
+
+	questions.append(lesson_question_image, question_stat)
+	lesson_words.append(words_image, words_stat)
+	stats.append(questions, lesson_words)
+	card.append(delete_lesson, title, material, add_material, stats)
+	root.append(card)
+}
+
+function sectionShowForm()
+{
+	website.lesson.form.setAttribute("data-id",  this.parentElement.dataset.id)
+	website.lesson.form.classList.remove("hide")
+	website.material.form.classList.add("hide")
+}
+
+toggleEdit() //Set to hide
+function toggleEdit() {
+	for (element of website.edit)
+		element.classList.toggle("hide");
+}
+
+togglePopUp() //Set to hide
+function togglePopUp() {
+	for (element of website.popup)
+		element.classList.toggle("hide");
 }
 
 function getCourseId() {
@@ -49,27 +125,21 @@ function getCourseId() {
 	return URL
 }
 
-COURSE_ID = getCourseId()
-
 function initDisplay(data)
 {
-	title = document.querySelector("#course-title")
-	created = document.querySelector("#course-timestamp")
-	description = document.querySelector("#course-description div")
-	title.data = (data['course']['title'] == null) ? "Untitled" : data['course']['title']
-	created.data =  data['course']['created']
-	description.data = data['course']['description']
+	website.course.title.innerText = (data['course']['title'] == null) ? "Untitled" : data['course']['title']
+	website.course.innerText =  data['course']['created']
+	website.course.description.innerText = data['course']['description']
 
-	for (lesson of data['lessons'])
+	for (element of data['lessons'])
 	{
-		displayLesson(lesson)
+		lesson.display(element, website.lesson.cards)
 	}
 
 	for (textbook of data['textbooks'])
 	{
-		root = document.querySelector("#material_cards")
-		displayBook(textbook, root)
-		listTextbook(textbook)
+		displayBook(textbook, website.material.cards)
+		listTextbook(textbook, website.material.select)
 	}
 }
 
@@ -84,7 +154,6 @@ fetch(`${API_URL}/api/website/course/${COURSE_ID}`,  {
 })
 .then((data) =>
 {
-	console.log(data)
 	lessons = data['lessons']
 	goals = data['goals']
 	textbooks = data['textbooks']
@@ -95,43 +164,16 @@ fetch(`${API_URL}/api/website/course/${COURSE_ID}`,  {
 	initDisplay(data)
 })
 
-
-modify_button.addEventListener("click", () =>
+website.modify.addEventListener("click", () =>
 {
-	save_button.style.display = "inline"
-	cancel_button.style.display = "inline"
-	finish_button.style.display = "inline"
-	delete_button.style.display = "inline"
-	modify_button.style.display = "none"
-
-	add_lesson.style.display="flex"
-	add_goal.style.display="block"
-	add_material.style.display="block"
-
-	edit_elements = document.querySelectorAll(".edit")
-	for (element of edit_elements)
-	{
-		element.style.display = ""
-	}
+	website.modify.classList.add("hide")
+	toggleEdit()
 })
 
-cancel_button.addEventListener("click", () =>
+website.done.addEventListener("click", () =>
 {
-	save_button.style.display = "none"
-	cancel_button.style.display = "none"
-	finish_button.style.display = "none"
-	delete_button.style.display = "none"
-	modify_button.style.display = "inline"
-
-	add_lesson.style.display = "none"
-	add_goal.style.display="none"
-	add_material.style.display="none"
-
-	edit_elements = document.querySelectorAll(".edit")
-	for (element of edit_elements)
-	{
-		element.style.display = "none"
-	}
+	document.querySelector("#modify").classList.remove("hide")
+	toggleEdit()
 })
 
 function deleteLesson()
@@ -170,96 +212,8 @@ function deleteTextbook()
 	})
 }
 
-function showMaterialSection()
-{
-	material_section = document.querySelector("#material_section")
-	material_form = document.querySelector("#material_form")
-
-	material_section.setAttribute("data-id",  this.parentElement.dataset.id)
-
-	if (material_section.style.display != "none")
-	{
-		material_section.style.display = "none"
-	}
-	else
-	{
-		material_section.style.display = ""
-		material_form.style.display = "none"
-	}
-}
 
 //is DOM manipulation supposed to be this verbose
-function displayLesson(lesson)
-{
-	lesson_cards = document.querySelector("#lesson_cards")
-	root = document.createElement("div")
-	root.setAttribute("data-id", lesson['id'])
-
-	const delete_lesson = document.createElement("button")
-	delete_lesson.innerText = "-"
-	delete_lesson.addEventListener("click", deleteLesson)
-	delete_lesson.classList.add("delete_lesson")
-	delete_lesson.classList.add("edit")
-
-
-	// Find a less stupid way for this 
-	if (document.querySelector("#modify").style.display !== "none")
-		delete_lesson.style.display = "none";
-
-	const lesson_title  = document.createElement("h2")
-	lesson_title.innerText = lesson['title']
-	lesson_title.className = "lesson_title"
-	
-	const lesson_material = document.createElement("div")
-	lesson_material.className = "lesson_material"
-
-	for (section of lesson['textbook_sections'])
-	{
-		displaySection(section, lesson_material)
-	}
-
-	lesson_add_material = document.createElement("button")
-	lesson_add_material.innerText = "+"
-	lesson_add_material.classList.add("edit") 
-	lesson_add_material.classList.add("lesson_add_material")
-	lesson_add_material.addEventListener("click", showMaterialSection) 
-
-	if (document.querySelector("#modify").style.display !== "none")
-		lesson_add_material.style.display = "none";
-
-	const lesson_questions = document.createElement("div")	
-	lesson_questions.className = "lesson_questions"
-	
-	const lesson_question_stat = document.createElement("p")
-	lesson_question_stat.innerText = lesson['question_count']	
-	lesson_question_stat.className = "lesson_stat_data"
-
-	const lesson_question_image = document.createElement("img")
-	lesson_question_image.src = "/static/question.svg"
-	lesson_question_image.className = "lesson_stat_image"
-
-	const lesson_words = document.createElement("div")
-	lesson_words.className = "lesson_words"
-
-	words = lesson['notebook_words'] == null ? 0 : lesson['notebook_words']
-	lesson_words_stat = document.createElement("p")	
-	lesson_words_stat.innerText = words
-	lesson_words_stat.className = "lesson_stat_data"
-
-	lesson_words_image= document.createElement("img")
-	lesson_words_image.src = "/static/question.svg"
-	lesson_words_image.className = "lesson_stat_image"
-
-	lesson_stats = document.createElement("div")
-	lesson_stats.className = "lesson_stats"
-
-
-	lesson_questions.append(lesson_question_image, lesson_question_stat)
-	lesson_words.append(lesson_words_image, lesson_words_stat)
-	lesson_stats.append(lesson_questions, lesson_words)
-	root.append(delete_lesson, lesson_title, lesson_material, lesson_add_material, lesson_stats)
-	lesson_cards.append(root)
-}
 
 function displaySettings()
 {
@@ -278,7 +232,6 @@ add_lesson.addEventListener("submit", (e) =>
 {
 	e.preventDefault();
 	var form_data = new FormData(add_lesson)
-	console.log(form_data.get('title'))
 	if (form_data.get('title') === "")
 		form_data.set('title', "Untitled")
 	lesson_data = {'title': form_data.get('title')}
@@ -296,33 +249,29 @@ add_lesson.addEventListener("submit", (e) =>
 		displayLesson({
 			id : data['id'],
 			title : data['title'], 
+			textbook_sections: [],
 			notebook_words : 0,
 			question_count : 0
-		})
+		}, website.lesson.cards)
 	})
 })
 
-add_material.addEventListener("click", () =>
+website.modify.addEventListener("click", () =>
 {
-	document.querySelector("#material_form").style.display = ""
-	document.querySelector("#material_form .success").style.display="none"
-	document.querySelector("#material_form .failure").style.display="none"
-	document.querySelector("#material_section").style.display = "none"
+	website.material.form.classList.remove("hide")
+	website.material.success.classList.add("hide")
+	website.material.success.classList.add("hide")
+	website.lesson.material_section.add("hide")
 })
 
-add_goal.addEventListener("click", () => 
-{
-	
-}
+//add_goal.addEventListener("click", () => {})
 
-function listTextbook(data)
+function listTextbook(data, root)
 {
-	material_select = document.querySelector("#material_select")
-	textbook_option = document.createElement("option")	
+	textbook_option = document.createElement("option")
 	textbook_option.value= data['id']
 	textbook_option.innerText = data['title']
-
-	material_select.append(textbook_option)
+	root.append(textbook_option)
 }
 
 function displayBook(data, root)
@@ -372,24 +321,21 @@ material_form.addEventListener("submit", (e) =>
 		if (request.status == 201)
 		{
 			material_form.reset()
-			document.querySelector("#material_form .failure").style.display="none"
-			document.querySelector("#material_form .success").style.display=""
-			response = request.response
-			root = document.querySelector("#material_cards")
-			displayBook(response, root)
-			listTextbook(response)
+			website.material.failure.add("hide")
+			website.material.success.remove("hide")
+			displayBook(request.response, website.material.cards)
+			listTextbook(request.response)
 		}
 		else
 		{
-			document.querySelector("#material_form .success").style.display="none"
-			document.querySelector("#material_form .failure").style.display=""
+			website.material.failure.remove("hide")
+			website.material.success.add("hide")
 		}
 	}
 	request.send(form_data)
 })
 
-material_section = document.querySelector("#material_section")
-material_section.addEventListener("submit", (e) =>
+website.lesson.form.addEventListener("submit", (e) =>
 {
 	e.preventDefault();
 	lesson_id = material_section.dataset.id

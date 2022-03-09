@@ -224,7 +224,6 @@ def updateLessonTitle(lesson_title, lesson_id):
 def createTextbook(course_id, isbn, title, author, pages, filename=None):
     textbook_id = generateKey(16)
     sql("INSERT INTO textbook VALUES (%s, %s, %s, %s, %s, %s, %s)", (textbook_id, course_id, filename, author, isbn, title, pages))
-    
     return {"id" : textbook_id, "filename": filename, "title" : title, "author" : author, "pages" : pages}
 
 def deleteTextbook(textbook_id):
@@ -265,6 +264,18 @@ def createGoal(course_id, goal_type, metric):
     sql("INSERT INTO goals VALUES (%s, %s, %s)", (course_id, goal_type, metric))
     return None
 
+"""
+
+NOTEBOOK
+
+"""
+
+def getNotebook(course_id):
+    data = sql("SELECT id, lesson_id, text_content FROM notebook_section")
+    payload = []
+    for i in data:
+        payload.append({ "id" : i[0], "lesson_id" : i[1], "text_content" : i[2]})
+    return payload
 
 """
 API Router
@@ -571,7 +582,7 @@ def websiteCourse(course_id):
             goals = getGoals(course_id)
             payload = {'username': getUsername(user_id), 'course': course, 'lessons': lessons, 'textbooks': textbooks, 'goals' : goals}
             response = jsonify(payload)
-            response = makeCORS(response)
+            response = makeCORS(response, "GET")
             return response, 201
         else:
             return "", 400
@@ -579,8 +590,15 @@ def websiteCourse(course_id):
         print(traceback.format_exc())
         return "", 400     
 
-@app.route("/api/website/<course_id>/notebook") 
+@app.route("/api/website/<course_id>/notebook", methods=['GET']) 
 def websiteNotebook(course_id):
+    try:
+        user_id = escape(request.cookies.get('user_id'))
+        session_id = escape(request.cookies.get('session_id'))
+        #if (validateSession(user_id, session_id) and verifyCourse(course_id, user_id)):
+    except Exception as e:
+        print(traceback.format_exc())
+        return "", 400
     return "", 400
 
 @app.route("/api/website/<course_id>/textbook")

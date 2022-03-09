@@ -1,0 +1,10 @@
+{% extends "root.j2" %}
+{% block body %}
+	<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" async></script>
+	<script src="/static/notebook.js" defer></script>
+	{% include "course_header.j2" %}
+	<body>
+		<main id="notebook" contenteditable="true">
+		</main>
+	</body>
+{% endblock body %}

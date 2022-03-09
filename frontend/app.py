@@ -26,7 +26,7 @@ def monalect():
 def create():
     return render_template("create.j2")
 
-@app.route("/monalect/<course>")
+@app.route("/monalect/<course>/overview")
 def course(course):
     return render_template("course.j2")
 

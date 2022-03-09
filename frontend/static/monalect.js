@@ -36,7 +36,7 @@ function createCourseCards(courses, root){
 				</textarea>
 			</div>
 			<div>
-				<a href="${course['course_id']}"><p>Study</p></a>
+				<a href="${course['course_id']}/overview"><p>Study</p></a>
 			</div>
 		</article>
 		`
@@ -49,7 +49,7 @@ function createNavList(courses, root)
 	for (course of courses) {
 		title = (course['title'] == null) ? "Untitled" : course['title']
 		navHTML = `
-		<a href="/monalect/${course['course_id']}"<div class="course_list"> 
+		<a href="/monalect/${course['course_id']}/overview"<div class="course_list"> 
 			<img src="/static/notebook.svg">
 			<p>${title}</p>
 		</div>`
@@ -95,6 +95,6 @@ document.querySelector("#create_course").addEventListener("click", () =>
 	.then((data) => 
 	{
 		course_id = data['course_id']
-		window.location.href = `/monalect/${course_id}`
+		window.location.href = `/monalect/${course_id}/overview`
 	})
 })

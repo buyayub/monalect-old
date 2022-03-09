@@ -22,7 +22,7 @@ CREATE TABLE IF NOT EXISTS courses (
 DROP TABLE lesson CASCADE;
 CREATE TABLE IF NOT EXISTS lesson (
 	id VARCHAR(32) PRIMARY KEY UNIQUE NOT NULL,
-	course_id VARCHAR(32) REFERENCES courses (id),
+	course_id VARCHAR(32) REFERENCES courses (id) ON DELETE CASCADE,
 	title VARCHAR(255) NOT NULL
 );
 
@@ -30,7 +30,7 @@ DROP TABLE question CASCADE;
 CREATE TABLE IF NOT EXISTS question (
 	id VARCHAR(32) PRIMARY KEY UNIQUE NOT NULL,
 	course_id VARCHAR(32) REFERENCES courses(id),
-	lesson VARCHAR(32) REFERENCES lesson(id),
+	lesson VARCHAR(32) REFERENCES lesson(id) ON DELETE CASCADE,
 	question TEXT,
 	answer TEXT
 );	
@@ -39,7 +39,7 @@ DROP TABLE textbook CASCADE;
 CREATE TABLE IF NOT EXISTS textbook
 (
 	id VARCHAR(16) PRIMARY KEY UNIQUE NOT NULL,
-	course_id VARCHAR(32) REFERENCES courses (id),
+	course_id VARCHAR(32) REFERENCES courses (id) ON DELETE CASCADE,
 	filename VARCHAR(16),
 	author VARCHAR(255),
 	book ISBN13,
@@ -50,8 +50,8 @@ CREATE TABLE IF NOT EXISTS textbook
 DROP TABLE textbook_section CASCADE;
 CREATE TABLE IF NOT EXISTS textbook_section
 (
-	textbook VARCHAR(32) REFERENCES textbook (id),
-	lesson_id VARCHAR(32) REFERENCES lesson (id),
+	textbook VARCHAR(32) REFERENCES textbook (id) ON DELETE CASCADE,
+	lesson_id VARCHAR(32) REFERENCES lesson (id) ON DELETE CASCADE,
 	start_page INT,
  	end_page INT
 );
@@ -60,14 +60,14 @@ DROP TABLE notebook_section CASCADE;
 CREATE TABLE IF NOT EXISTS notebook_section
 (
 	id VARCHAR(32) PRIMARY KEY UNIQUE NOT NULL,
-	lesson_id VARCHAR(32) REFERENCES lesson(id),
-	course_id VARCHAR(32) REFERENCES courses (id),
+	lesson_id VARCHAR(32) REFERENCES lesson(id) ON DELETE CASCADE,
+	course_id VARCHAR(32) REFERENCES courses (id) ON DELETE CASCADE,
 	text_content TEXT
 );
 
 DROP TABLE IF EXISTS goals;
 CREATE TABLE IF NOT EXISTS goals(
-	course_id VARCHAR(32) REFERENCES courses(id),
+	course_id VARCHAR(32) REFERENCES courses(id) ON DELETE CASCADE,
 	goal VARCHAR(16) CHECK (goal in ('notebook', 'question', 'test')) NOT NULL,
 	complete BOOL,
 	metric INT
@@ -104,14 +104,14 @@ DROP TABLE IF EXISTS test CASCADE;
 CREATE TABLE IF NOT EXISTS test
 (
 	id VARCHAR (32) PRIMARY KEY UNIQUE NOT NULL,
-	course_id VARCHAR(32) REFERENCES courses(id)
+	course_id VARCHAR(32) REFERENCES courses(id) ON DELETE CASCADE
 );
 
 DROP TABLE IF EXISTS test_question CASCADE;
 CREATE TABLE IF NOT EXISTS test_question
 (
-	question_id VARCHAR(32) REFERENCES question(id),
-	test VARCHAR(32) REFERENCES test(id),
+	question_id VARCHAR(32) REFERENCES question(id) ON DELETE CASCADE,
+	test VARCHAR(32) REFERENCES test(id) ON DELETE CASCADE,
 	correct BOOL DEFAULT NULL
 );
 
