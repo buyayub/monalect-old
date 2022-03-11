@@ -25,9 +25,6 @@ GLOBAL FUNCTIONS
 DATABASE = "dbname=monalecttest user=zheng"
 
 def sendEmail(email):
-    # Honestly, fuck email registration, what the fuck there is no documentation on that fucking shit everyone uses it what the fuck. if self hosting an email is so fucking ridiculous, then why are there no other existing fucking options, what the fuck.
-    # I'm going with username+password and recaptcha for now
-    # later on I'll use mailgun
     return None
 
 def sql(command, values):
