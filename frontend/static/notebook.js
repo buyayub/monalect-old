@@ -9,17 +9,12 @@ website = {
 
 function markit(event) {
 	selection = window.getSelection()
-	offset = selection.anchorOffset
-
 	selectionNode = selection.anchorNode.parentNode
-	console.log(selectionNode)
+
 	markdown = marked.parseInline(selectionNode.innerHTML)
-	selectionNode.innerHTML = markdown
-	range = document.createRange()
-	range.setStart(selectionNode.childNodes[0], offset)
-	range.collapse()
-	window.getSelection().removeAllRanges()
-	window.getSelection().addRange(range)
+	dummy = document.createElement("div")
+	dummy.innerHTML = markdown
+	console.log(dummy)
 }
 
 website.notebook.addEventListener("input", markit)
