@@ -60,7 +60,6 @@
 6. Test 
 7. Profile
 
-
 [AFTERTHOUGHTS AND PROCRASTINATIONS]
 
 - return type of error, for example if there is an issue with finding something in the database, return a 404, and make it known to the user what went wrong (no direct display of error code, that's a XSS danger)
