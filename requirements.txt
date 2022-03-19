@@ -1,4 +1,5 @@
 flask
+flask-testing
 requests
 sqlalchemy
 bcrypt

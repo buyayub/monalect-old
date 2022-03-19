@@ -5,7 +5,7 @@ import requests
 import re
 import traceback
 import os
-from monalect.database import db_session, init_db
+from monalect.database import db_session
 from monalect.models import User
 from monalect.utils import *
 
