@@ -54,7 +54,9 @@ class Textbook(Base):
 class TextbookSection(Base):
     __tablename__ = 'textbook_section'
 
-    lesson_id = Column(Integer, ForeignKey("lesson.id"), primary_key=True, nullable=False)
+    id = Column(Integer, primary_key=True, unique=True, nullable=False)
+    course_id = Column(Integer, ForeignKey("course.id"), nullable=False)
+    lesson_id = Column(Integer, ForeignKey("lesson.id"), nullable=False)
     textbook_id = Column(Integer, ForeignKey("textbook.id"), nullable=False)
     start_page = Column(Integer)
     end_page = Column(Integer)
