@@ -125,4 +125,7 @@ venv.bak/
 dmypy.json
 
 #Vim swap files
-.swp
+*.swp
+
+#Node
+node_modules/
