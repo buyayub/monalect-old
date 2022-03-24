@@ -35,7 +35,6 @@ GLOBAL FUNCTIONS
 """
 
 @app.route("/api/register", methods=['POST', 'OPTIONS'])
-
 def apiRegister(): 
     """
     JSON field inputs, unordered:
@@ -43,33 +42,43 @@ def apiRegister():
         email (string)
         password (string)
         recaptcha (string): the g-recaptcha-code 
-    HTTP Response outputs:
-        204: if everything is good
-        400: if input bad
+
+    HTTP Successful Responses:
+        204: everything is good
+            session_id (string)
+            user_id (string)
+            expiry_date (string)
+
+    HTTP Error Responses: 
+        400: if something went horribly wrong
         401: if captcha turns out false
+        409: if json parameters bad
+        415: if not json
+        422: if the user puts in bad input
     """
+
     if request.method == 'POST':
-        json_data = request.get_json() 
         try:
+            json_data = request.get_json() 
+
+            if (json_data == None):
+                abort(415)
+
             username = escape(json_data['username'])
             email = escape(json_data['email'])
             password = escape(json_data['password'])
             captcha = escape(json_data['recaptcha'])
+
+            user_response = user.register(username, password, email)
+            session_response = session.create(user_response.id)
+            response = makeCORS(jsonify({'user_id': user_response.id, 'session_id' : session_response.id, 'expiry_date': session_response.expiry_date}))
+            return response, 201
         except(KeyError):
-            abort(400)
-        if check.username(username) and check.password(password) and check.captcha(captcha):
-            if check.email(email):
-                user = user.register(username, password, email)
-                session = session.create(user_id)
-                response = makeCORS(jsonify({'user_id': user.id, 'session_id' : session.id, 'expiry_date': session.expiry_date}))
-                return response, 201
-            elif email == "":
-                user = user.register(username, password)
-                session = session.create(user_id)
-                response = makeCORS(jsonify({'user_id': user.id, 'session_id' : session.id, 'expiry_date': session.expiry_date}))
-                return response, 201
-        else: 
-            abort(400)
+            abort(409)
+        except(ValueError):
+            abort(422)
+
+        abort(400)
     elif request.method == 'OPTIONS':
         response = makeCORS(Response(""))
         return response, 201
@@ -84,7 +93,7 @@ def apiLogin():
         password(string)
         recaptcha(string)
     """
-     
+
     json_data = request.get_json()
     if (request.method == 'POST'):
         try:
@@ -94,27 +103,26 @@ def apiLogin():
         except KeyError as e:
             print(e)
             abort(400)
-        try: 
-            user_id = user.id(username)
-            if (user.attempts(user_id) > ALLOWED_ATTEMPTS):
-                if (user.authetnicate(user_id, password) and check.captcha(captcha)):
-                    session = session.create(user_id)
-                    response = makeCORS(jsonify({'user_id': session.user_id, 'session_id' : session.id, 'expiry_date': session.expiry_date}))
-                    return response, 200
-                else:
-                    addLoginAttempt(user_id)
-                    return "", 403
+
+        user_id = user.id(username)
+
+        if (user.attempts(user_id) > ALLOWED_ATTEMPTS):
+            if (user.authenticate(user_id, password) and check.captcha(captcha)):
+                session_response = session.create(user_id)
+                response = makeCORS(jsonify({'user_id' : session_response.user_id, 'session_id' : session_response.id, 'expiry_date' : session_response.expiry_date}))
+                return response, 200
+            else:
+                user.addAttempt(user_id)
+                return "", 403
+        else: 
+            if user.authenticate(user_id, password):
+                session_response = session.create(user_id)
+                response = makeCORS(jsonify({'user_id': session_response.user_id, 'session_id': session_response.id, 'expiry_date': session_response.expiry_date}))
+                return response, 200
             else: 
-                if authenticateUser(user_id, password):
-                    session = createSession(user_id)
-                    response = makeCORS(jsonify({'user_id': session.user_id, 'session_id': session.id, 'expiry_date': session.expiry_date}))
-                    return response, 200
-                else: 
-                    user.addAttempt(user_id)
-                    return "", 401
-        except Exception as e:
-            print(e)
-            abort(400)
+                user.addAttempt(user_id)
+                return "", 401
+        return "", 400
     elif (request.method == 'OPTIONS'):
         response = makeCORS(Response(""))
         return response, 201
@@ -287,10 +295,18 @@ API INITIAL LOAD FOR THE WEBSITE
 @app.route("/api/website/monalect", methods=['GET'])
 def websiteOverview():
     try:
+        user_id = escape(request.cookies.get('user_id'))
+        session_id = escape(request.cookies.get('session_id'))
+        if session.authenticate(user_id, session_id):
+            payload = {'username' : user.username(user_id), 'courses' : course.get(user_id)}
+            response = makeCORS(jsonify(payload))
             return response, 201
+        else: 
+            raise Exception("session invalid")
     except Exception as e:
-        print(e)
+        print(traceback.format_exc())
         return "", 400
+    return "", 400
 
 @app.route("/api/website/course/<course_id>", methods=['GET'])
 def websiteCourse(course_id):

@@ -1,64 +1,12 @@
 [Monalect To-Do List]
 
-(functionality)
-
-1. Home (Log-in, Sign-up) 
-	+ Log-in
-	+ Sign-up
-	- User clicks a button to go to the dashboard if they're already in logged in/in a session
-2. Courses DONE
-	+ Course cards
-	+ Create course
-	+ Nav-bar
-	- Delete course with verification
-2.5 Course overview
-	- Making links to course
-	- Edit view
-	- Study view
-3. Notebook
-	- Section text editor
-	- Scroll viewer
-	- Open Textbook
-4. Textbook
-	- Basic PDF viewer
-	- Open notebook
-5. Question
-	- 
-6. Test 
-7. Profile
-
-(security)
-
-1. Home (Log-in, Sign-up)
-2. Course Overview
-	+ Nav-bar
-3. Notebook
-4. Textbook
-5. Question
-6. Test 
-7. Profile
-
-(reliability)
-
-1. Home (Log-in, Sign-up)
-2. Course Overview
-	+ Nav-bar
-3. Notebook
-4. Textbook
-5. Question
-6. Test 
-7. Profile
-
-(design)
-
-1. Home (Log-in, Sign-up)
-2. Course Overview
-	+ Nav-bar
-3. Notebook
-4. Textbook
-5. Question
-6. Test 
-7. Profile
++ Go from Core to ORM Queries, and create CRUD operations
+	+ course
+	+ goal
+	+ lesson
+	+ textbook
+	+ textbook_section
+	+ user 
 
 [AFTERTHOUGHTS AND PROCRASTINATIONS]
 
@@ -86,3 +34,4 @@ x password confirmation [DISCARDED - use show password instead]
 - remove server type for security purposes (don't include 'made with jinja2' as well in the meta headers)
 - allow user to get goals automatically generated client-side
 - pdf sanitation
+

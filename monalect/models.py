@@ -12,7 +12,7 @@ class User(Base):
     username = Column(String(32), unique=True, nullable=False)
     email = Column(Text, unique=True)
     membership = Column(SmallInteger, CheckConstraint('membership in (0, 1, 2)'), default=0)
-    joined = Column(Date, unique=True, default=func.now())
+    joined = Column(Date, default=func.now())
     passhash = Column(Text, nullable=False)
 
 class Course(Base):
