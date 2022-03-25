@@ -11,7 +11,7 @@ def create(course_id, goal, metric=0):
     return goal
 
 def getAll(course_id):
-    goalAll = db_session.query(Goal).filter(Goal.course_id == course_id))
+    goalAll = db_session.query(Goal).filter(Goal.course_id == course_id)
     return goalAll
 
 def get(goal_id):
@@ -22,9 +22,9 @@ def delete(goal_id):
     db_session.query(Goal).filter(Goal.id == goal_id).delete()
     return None
 
-def update(goal_id, goal, complete, metric):
+def update(goal_id, goal_type, complete, metric):
     goal = db_session.query(Goal).filter(Goal.id == goal_id).first()
-    goal.goal = Goal.TYPE[goal]
+    goal.goal = Goal.TYPE[goal_type]
     goal.complete = complete
     goal.metric = metric
     return goal

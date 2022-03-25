@@ -1,7 +1,9 @@
 from sqlalchemy import Column,String,Date,Integer,Text,SmallInteger,Boolean,CheckConstraint,ForeignKey
 from sqlalchemy.sql import func
+from sqlalchemy.dialects.postgresql import UUID
 import bcrypt, secrets, string
 from monalect.database import Base
+import uuid
 
 class User(Base):
     __tablename__ = 'users'

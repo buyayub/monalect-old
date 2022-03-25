@@ -13,7 +13,7 @@ def create(user_id, title="Untitled", description=""):
     course = Course(user_id=user_id, title=title, description=description)
     db_session.add(course)
     db_session.commit()
-    return None
+    return course 
 
 def delete(course_id):
    db_session.query(Course).filter(Course.id == course_id).delete()

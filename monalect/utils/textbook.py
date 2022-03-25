@@ -18,15 +18,16 @@ def delete(textbook_id):
 
 def create(course_id, title=None, isbn=None, author=None, pages=0, filename=None):
 
-    if len(isbn) == 10:
-        isbn = "978" + isbn
+    if isbn:
+        if len(isbn) == 10:
+            isbn = "978" + isbn
 
-    if (len(isbn) != 13 and isbn != None) or not isbn.isnumeric():
-        raise ValueError
+        if len(isbn) != 13 or not isbn.isnumeric():
+            raise ValueError
 
-    textbook = Textbook(course_id=course_id, title=title, author=author, pages=pages, filename=filename)
-    db_session.add(lesson)
-    db_session.execute()
+    textbook = Textbook(course_id=course_id, title=title, isbn=isbn, author=author, pages=pages, filename=filename)
+    db_session.add(textbook)
+    db_session.commit()
     return textbook 
 
 def updateTitle(textbook_id, title):
@@ -34,7 +35,7 @@ def updateTitle(textbook_id, title):
     textbook.title = title
     return textbook
 
-def update(textbook_id, author, isbn, title, pages):
+def update(textbook_id, title, isbn, author, pages):
     textbook = db_session.query(Textbook).filter(Textbook.id == textbook_id).first()
 
     if len(isbn) == 10:
