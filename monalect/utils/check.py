@@ -1,7 +1,10 @@
 import re
 
 def username(username):
-    return ((username.isalnum() or (username.isalnum() and ("_" in username))) and len(username) < 256)
+    return ((username.isalnum() or (username.isalnum() and ("_" in username))) and len(username) < 32)
+
+def title(title):
+    return ((title.isalnum() or (title.isalnum() and (" " in title))) and len(title) < 128)
 
 def email(email):
     return re.fullmatch(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b', email)

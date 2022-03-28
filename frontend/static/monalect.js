@@ -1,1 +1,105 @@
-API_URL="http://localhost:9000",fetch(`${API_URL}/api/website/monalect`,{method:"GET",credentials:"include"}).then((t=>{if(t.ok)return t.json();console.log("Problem.")})).then((t=>{username=t.username,courses=t.courses,cards=document.querySelector("main.monalect div"),function(t,e){for(course of t)textbook_pages=null==course.textbook_pages?0:course.textbook_pages,notebook_words=null==course.notebook_words?0:course.notebook_words,question_count=course.question_count,description=null==course.description?"":course.description,title=null==course.title?"Untitled":course.title,cardHTML=`\n\t\t<article>\n\t\t\t<div>\n\t\t\t\t<img src="/static/notebook.svg">\n\t\t\t\t<div>\n\t\t\t\t\t<h2>${title}</h2>\n\t\t\t\t\t<div>\n\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t<img src="/static/textbook.svg" class="card_stats">\n\t\t\t\t\t\t\t<p>${textbook_pages}</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t<img src="/static/notebook.svg" class="card_stats">\n\t\t\t\t\t\t\t<p>${notebook_words}</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t\t<div>\n\t\t\t\t\t\t\t<img src="/static/question.svg" class="card_stats">\n\t\t\t\t\t\t\t<p>${question_count}</p>\n\t\t\t\t\t\t</div>\n\t\t\t\t\t</div>\n\t\t\t\t</div>\n\t\t\t</div>\n\t\t\t<div>\n\t\t\t\t<textarea placeholder="Add description...">\n\t\t\t\t${description}\n\t\t\t\t</textarea>\n\t\t\t</div>\n\t\t\t<div>\n\t\t\t\t<a href="${course.course_id}/overview"><p>Study</p></a>\n\t\t\t</div>\n\t\t</article>\n\t\t`,e.innerHTML+=cardHTML}(courses,cards),nav_list=document.querySelector("nav.monalect ul"),function(t,e){for(course of t)title=null==course.title?"Untitled":course.title,navHTML=`\n\t\t<a href="/monalect/${course.course_id}/overview"<div class="course_list"> \n\t\t\t<img src="/static/notebook.svg">\n\t\t\t<p>${title}</p>\n\t\t</div>`,e.innerHTML+=navHTML}(courses,nav_list)})),document.querySelector("#create_course").addEventListener("click",(()=>{fetch(`${API_URL}/api/course`,{method:"POST",credentials:"include"}).then((t=>{if(t.ok)return t.json();console.log("Problem.")})).then((t=>{course_id=t.course_id,window.location.href=`/monalect/${course_id}/overview`}))}));
+API_URL = "http://localhost:9000"
+
+function createCourseCards(courses, root){
+	for (course of courses) {
+		textbook_pages = (course['textbook_pages'] == null) ? 0 : course['textbook_pages']
+		notebook_words = (course['notebook_words'] == null) ? 0 : course['notebook_words']
+		question_count = course['question_count']
+		description = (course['description'] == null) ? "" : course['description']
+		title = (course['title'] == null) ? "Untitled" : course['title']
+		cardHTML = 
+		`
+		<article>
+			<div>
+				<img src="/static/notebook.svg">
+				<div>
+					<h2>${title}</h2>
+					<div>
+						<div>
+							<img src="/static/textbook.svg" class="card_stats">
+							<p>${textbook_pages}</p>
+						</div>
+						<div>
+							<img src="/static/notebook.svg" class="card_stats">
+							<p>${notebook_words}</p>
+						</div>
+						<div>
+							<img src="/static/question.svg" class="card_stats">
+							<p>${question_count}</p>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div>
+				<textarea placeholder="Add description...">
+				${description}
+				</textarea>
+			</div>
+			<div>
+				<a href="${course['course_id']}/overview"><p>Study</p></a>
+			</div>
+		</article>
+		`
+		root.innerHTML += cardHTML
+	}
+}
+
+function createNavList(courses, root)
+{
+	for (course of courses) {
+		title = (course['title'] == null) ? "Untitled" : course['title']
+		navHTML = `
+		<a href="/monalect/${course['course_id']}/overview"<div class="course_list"> 
+			<img src="/static/notebook.svg">
+			<p>${title}</p>
+		</div>`
+		root.innerHTML += navHTML
+	}
+}
+
+fetch (`${API_URL}/api/website/monalect`, {
+	method: 'GET',
+	credentials: "include"})
+.then((response) => {
+	if (response.ok){
+		return response.json()
+	}
+	else
+	{
+		console.log("Problem.")
+	}
+})
+.then((data) => {
+	username = data['username']
+	courses = data['courses']
+
+	cards = document.querySelector("main.monalect div")
+	nav_list = document.querySelector("nav.monalect ul")
+
+	if (courses !== null)
+	{
+		createCourseCards(courses, cards) 
+		createNavList(courses, nav_list) 
+	}
+})
+
+document.querySelector("#create_course").addEventListener("click", () => 
+{
+	fetch(`${API_URL}/api/course`, {method:'POST', credentials:'include'})
+	.then((response) => 
+	{
+		if (response.ok)
+		{
+			return response.json()		
+		}
+		else
+		{
+			console.log("Problem.")
+		}
+	})
+	.then((data) => 
+	{
+		course_id = data['course_id']
+		window.location.href = `/monalect/${course_id}/overview`
+	})
+})

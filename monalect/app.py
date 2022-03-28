@@ -142,9 +142,12 @@ def apiCourse():
     elif (request.method == 'POST'):
         user_id = escape(request.cookies.get('user_id'))
         session_id = escape(request.cookies.get('session_id'))
-        if (validateSession(user_id, session_id)):
-            course = course.create(user_id)
-            response = makeCORS(jsonify({'course_id' : course.id}))
+        if (session.authenticate(user_id, session_id)):
+            json_data = request.get_json() 
+            title = escape(json_data['title']) 
+            description = escape(json_data['description']) 
+            course_response = course.create(user_id, title, description)
+            response = makeCORS(jsonify({'id' : course_response.id, "title" : course_response.title, "description" : course_response.description, "created" : course_response.created}))
             return response, 201
         else:
             return "", 401
@@ -298,7 +301,13 @@ def websiteOverview():
         user_id = escape(request.cookies.get('user_id'))
         session_id = escape(request.cookies.get('session_id'))
         if session.authenticate(user_id, session_id):
-            payload = {'username' : user.username(user_id), 'courses' : course.get(user_id)}
+
+            course_response = course.getAll(user_id)
+            course_payload = []
+            for i in course_response:
+                course_payload.append({"id" : i.id, "created" : i.created, "title": i.title, "description" : i.description})
+
+            payload = {"username" : user.username(user_id), "courses" : course_payload}
             response = makeCORS(jsonify(payload))
             return response, 201
         else: 

@@ -27,7 +27,7 @@ def test_addAttempt():
     new = db_session.query(LoginAttempts).filter(LoginAttempts.user_id == user_id).first().attempts
     assert new == original + 1
 
-def test_course():
+def test_courseCRUD():
     user_id = user.id("timothy")
 
     #CREATE
@@ -58,7 +58,7 @@ def test_course():
     assert read == None
     assert updated == None
 
-def test_lesson():
+def test_lessonCRUD():
     user_id = user.id("timothy")
     original = course.create(user_id, "Text Course", "This is a test course")
     
@@ -94,7 +94,7 @@ def test_lesson():
     assert updated == None
     
 
-def test_goal():
+def test_goalCRUD():
     user_id = user.id("timothy")
     goal_course = course.create(user_id, "Test Course", "This is a test course")
 
@@ -195,7 +195,7 @@ def test_textbook():
     assert read == None
     assert updated == None
 
-def test_textbookSection():
+def test_textbookSectionCRUD():
     user_id = user.id("timothy")
     textbook_course = course.create(user_id, "Test Course", "This is a test course")
     section_lesson = lesson.create(textbook_course.id, "Sets")
@@ -252,33 +252,40 @@ def test_textbookSection():
     assert read == None
     assert updated == None
 
-"""
-def test_notebook():
+def test_notebookCRUD():
     user_id = user.id("timothy")
     notebook_course = course.create(user_id, "Test Course", "This is a test course")
-   
-    notebook_lessonAll = []
-    for title in ["Sets", "Logic", "Counting", "Direct Proof", "Contrapositive Proof"]:
-        notebook_lessonAll.append(lesson.create(title))
+
+    notebook_lesson = lesson.create("Algebra")
     
     #CREATE
-    created = []
-    for notebook_lesson in notebook_lessonAll
-        created.append(notebook.create(notebook_course.id, notebook_lesson.id))
-
-    for i in range(len(created)):
-        assert created[i].id != None
-        assert created[i].lesson_id == notebook_lessonAll[i].id
-        assert created[i].course_id == notebook_course.id
+    created = notebook.create(notebook_course.id, notebook_lesson.id, "<b>One</p>")
+    assert created.id != None
+    assert created.lesson_id == notebook_lesson.id
+    assert created.course_id == notebook_course.id
+    assert created.body == "<b>One</p>"
 
     #READ
-    
-    read = []
-    for i in created:
-        read.append(notebook.update(created.id, created.lesson_id, "<b>Hello</b>"))
+    read = notebook.getByLesson(notebook_lesson.id)
+    assert read.id != None
+    assert read.lesson_id == notebook_lesson.id
+    assert read.course_id == notebook_course.id
+    assert created.body == "<b>One</p>"
 
-    for i in range(len(read)):
-        assert read[i].id != None
-        assert read[i].lesson_id == notebook_lessonAll[i].id
-        assert read[i].course_id == notebook_course.id
-""" 
+    #UPDATE
+    updated = notebook.update(created.id, created.course_id, created.lesson_id, "<b>Two</b>")
+    assert updated.id != None
+    assert updated.lesson_id == notebook_lesson.id
+    assert updated.course_id == notebook_course.id
+    assert updated.body == "<b>Two</b>"
+
+    #DELETE
+    notebook.delete(created.id)
+
+    created = notebook.getSection(created.id)
+    read = notebook.getSection(read.id)
+    updated = notebook.getSection(updated.id)
+
+    assert created == None
+    assert read == None
+    assert updated == None

@@ -24,7 +24,7 @@ def get(course_id):
     return course
 
 def getAll(user_id):
-    courseAll = db_session.query(Course).filter(Course.user_id == user_id).fetchall()
+    courseAll = db_session.query(Course).filter(Course.user_id == user_id).all()
     return courseAll
 
 def update(course_id, title, description):

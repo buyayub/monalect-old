@@ -72,10 +72,15 @@ fetch (`${API_URL}/api/website/monalect`, {
 .then((data) => {
 	username = data['username']
 	courses = data['courses']
+
 	cards = document.querySelector("main.monalect div")
-	createCourseCards(courses, cards)
 	nav_list = document.querySelector("nav.monalect ul")
-	createNavList(courses, nav_list)
+
+	if (courses !== null)
+	{
+		createCourseCards(courses, cards) 
+		createNavList(courses, nav_list) 
+	}
 })
 
 document.querySelector("#create_course").addEventListener("click", () => 

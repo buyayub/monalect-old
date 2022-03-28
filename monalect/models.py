@@ -3,7 +3,7 @@ from sqlalchemy.sql import func
 from sqlalchemy.dialects.postgresql import UUID
 import bcrypt, secrets, string
 from monalect.database import Base
-import uuid
+import uuid, datetime
 
 class User(Base):
     __tablename__ = 'users'
