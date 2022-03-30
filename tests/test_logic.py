@@ -2,9 +2,15 @@ from sqlalchemy.orm import query
 from monalect.utils import user, course, lesson, goal, textbook, textbook_section, notebook
 from monalect.app import db_session
 from monalect.models import LoginAttempts
+import monalect.utils.check as check
+
+def _captcha(recaptcha):
+    return recaptcha != None
 
 def test_registration():
-    user_response = user.register("timothy", "Test1234", "")
+    check.captcha = _captcha
+
+    user_response = user.register("timothy", "Test1234", "", "")
     
     assert user_response.id != None
     assert len(user_response.id) == 32

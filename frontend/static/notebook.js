@@ -1,3 +1,8 @@
+/******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+/*!*************************!*\
+  !*** ./src/notebook.js ***!
+  \*************************/
 website = {
 	API_URL : "http://localhost:5000",
 	notebook : document.getElementById("notebook")
@@ -19,3 +24,7 @@ function markit(event) {
 
 website.notebook.addEventListener("input", markit)
 
+
+/******/ })()
+;
+//# sourceMappingURL=notebook.js.map

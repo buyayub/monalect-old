@@ -7,9 +7,8 @@ from monalect.utils import check
 import bcrypt, string, secrets, datetime
 
 
-def register(username, password, email):
-    #captcha = check.captcha(captcha)
-    if check.username(username) and check.password(password) and (check.email(email) or email == ""): #and check.captcha(captcha):
+def register(username, password, email, captcha_str):
+    if check.username(username) and check.password(password) and (check.email(email) or email == "") and check.captcha(captcha_str):
         salt = bcrypt.gensalt()
         hashed = bcrypt.hashpw(password.encode('utf8'), salt)
         user_id = generateKey(32)

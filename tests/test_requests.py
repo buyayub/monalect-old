@@ -2,6 +2,7 @@ from monalect.database import db_session
 from flask import Flask
 import monalect.models as models 
 import monalect.app as monalect
+import monalect.utils.check as check
 
 def _login(client):
     response = client.post("/api/login", json={
@@ -16,7 +17,13 @@ def _login(client):
 
     return None
 
+def _captcha(recaptcha):
+    return recaptcha != None
+
 def test_registration(client):
+
+    check.captcha = _captcha
+
     response = client.post("/api/register", json={
         "username": "yella",
         "password": "Test1234",

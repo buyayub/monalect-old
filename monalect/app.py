@@ -69,7 +69,7 @@ def apiRegister():
             password = escape(json_data['password'])
             captcha = escape(json_data['recaptcha'])
 
-            user_response = user.register(username, password, email)
+            user_response = user.register(username, password, email, captcha)
             session_response = session.create(user_response.id)
             response = makeCORS(jsonify({'user_id': user_response.id, 'session_id' : session_response.id, 'expiry_date': session_response.expiry_date}))
             return response, 201

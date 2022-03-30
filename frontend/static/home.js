@@ -1,3 +1,8 @@
+/******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+/*!*********************!*\
+  !*** ./src/home.js ***!
+  \*********************/
 /* 
  * Log-In
  */
@@ -122,3 +127,7 @@ signup.addEventListener("submit", (event) =>
 		window.location.href = "/monalect"
 	})
 });
+
+/******/ })()
+;
+//# sourceMappingURL=home.js.map

@@ -1,3 +1,8 @@
+/******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+/*!*************************!*\
+  !*** ./src/monalect.js ***!
+  \*************************/
 API_URL = "http://localhost:9000"
 
 function createCourseCards(courses, root){
@@ -103,3 +108,7 @@ document.querySelector("#create_course").addEventListener("click", () =>
 		window.location.href = `/monalect/${course_id}/overview`
 	})
 })
+
+/******/ })()
+;
+//# sourceMappingURL=monalect.js.map

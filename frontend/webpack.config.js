@@ -11,5 +11,7 @@ module.exports = {
 	output: {
 		filename: '[name].js',
 		path: __dirname + '/static/'
-	}
+	},
+	mode: "development",
+	devtool: "source-map"
 }

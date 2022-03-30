@@ -1,3 +1,8 @@
+/******/ (() => { // webpackBootstrap
+var __webpack_exports__ = {};
+/*!***********************!*\
+  !*** ./src/course.js ***!
+  \***********************/
 const API_URL = "http://localhost:9000"
 const COURSE_ID = getCourseId()
 
@@ -390,3 +395,7 @@ function displaySection(data, root)
 	root.append(section_img, section_text)
 }
 
+
+/******/ })()
+;
+//# sourceMappingURL=course.js.map
