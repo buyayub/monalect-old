@@ -69,10 +69,40 @@ def test_courseInit(client):
     assert response.json["courses"][0]["description"] == "This is a description"
     assert response.json["courses"][0]["created"] != None
 
-"""
+def test_textbookCreate(client):
+    _login(client)
+
+    course_response = client.get("/api/website/monalect")
+    course_id = course_response.json["courses"][0]["id"]
+    #Data instead of json
+    response =  client.post("/api/" + str(course_id) + "/textbook", data={"title":"Book of Proof","isbn" : "9780989472128", "pages" : 368, "author" : "Richard Hammack"})
+
+    assert response.json["id"] != None
+    assert response.json["title"] == "Book of Proof"
+    assert response.json["isbn"] == "9780989472128"
+    assert response.json["pages"] == 368
+    assert response.json["author"] == "Richard Hammack"
+
+def test_lessonCreate(client):
+    _login(client)
+
+    course_respons = client.get("/api/website/monalect")
+    course_id = course_response.json["courses"][0]["id"]
+    
+
 def test_courseOverviewInit(client):
     _login(client)
 
-    response = client.get("/api/website/
-    assert response != None")
-"""
+    course_response = client.get("/api/website/monalect")
+    course_id = course_response.json["courses"][0]["id"]
+
+    response = client.get("/api/website/course/" + str(course_id))
+
+    assert response != None
+    assert response.json['username'] == "yella"
+    assert response.json['course']['id'] == course_id
+    assert response.json['course']['description'] == "This is a description"
+    assert response.json['textbooks'][0]["title"] ==  "Book of Proof"
+    assert response.json['textbooks'][0]["isbn"] ==  "9780989472128"
+    assert response.json['textbooks'][0]["pages"] == 368
+    assert response.json['textbooks'][0]["author"] == "Richard Hammack"

@@ -5,7 +5,7 @@ from monalect.utils.shared import generateKey
 import bcrypt, string, secrets, datetime
 
 def getAll(course_id):
-    textbookAll = db_session.query(Textbook).filter(Textbook.course_id == course_id).fetchall()
+    textbookAll = db_session.query(Textbook).filter(Textbook.course_id == course_id).all()
     return textbookAll
 
 def get(textbook_id):
@@ -17,7 +17,6 @@ def delete(textbook_id):
     return None
 
 def create(course_id, title=None, isbn=None, author=None, pages=0, filename=None):
-
     if isbn:
         if len(isbn) == 10:
             isbn = "978" + isbn

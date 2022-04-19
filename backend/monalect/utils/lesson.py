@@ -6,7 +6,7 @@ from monalect.utils.shared import generateKey
 from monalect.utils import notebook
 
 def getAll(course_id):
-    lessonAll = db_session.query(Lesson).filter(Course.course_id==course_id).fetchall()
+    lessonAll = db_session.query(Lesson).filter(Lesson.course_id==course_id).all()
     return lessonAll
 
 def get(lesson_id):

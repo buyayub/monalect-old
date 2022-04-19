@@ -204,7 +204,7 @@ def apiTextbook(course_id):
         if (session.authenticate(user_id, session_id) and course.authenticate(course_id, user_id)):
             if (request.method == 'POST'):
                 title = escape(request.form['title'])
-                isbn = escape(request.form['ISBN'])
+                isbn = escape(request.form['isbn'])
                 pages = escape(request.form['pages'])
                 author = escape(request.form['author'])
                 if not check.isbn(isbn):
@@ -219,13 +219,15 @@ def apiTextbook(course_id):
                         response = makeCORS(response)
                         return response, 201
                     else:
-                        data = textbook.create(course_id, isbn, title, author, pages)
-                        response = jsonify(data)
+                        tex = textbook.create(course_id, title, isbn, author, pages)
+                        payload = {"id" : tex.id, "isbn" : tex.isbn, "author" :  tex.author, "title" : tex.title, "pages" : tex.pages}
+                        response = jsonify(payload)
                         response = makeCORS(response)
                         return response, 201
                 else:
-                    data = textbook.create(course_id, isbn, title, author, pages)
-                    response = jsonify(data)
+                    tex = textbook.create(course_id=course_id, isbn=isbn, title=title, author=author, pages=pages)
+                    payload = {"id" : tex.id, "isbn" : tex.isbn, "author" :  tex.author, "title" : tex.title, "pages" : tex.pages}
+                    response = jsonify(payload)
                     response = makeCORS(response)
                     return response, 201
                 return "", 401
@@ -320,10 +322,34 @@ def websiteOverview():
 @app.route("/api/website/course/<course_id>", methods=['GET'])
 def websiteCourse(course_id):
     try:
-        return response, 201
+        user_id = escape(request.cookies.get('user_id'))
+        session_id = escape(request.cookies.get('session_id'))
+        if (session.authenticate(user_id, session_id) and course.authenticate(course_id, user_id)):
+            course_response = course.get(course_id)
+            lessons = lesson.getAll(course_id)
+            textbooks = textbook.getAll(course_id)
+            goals = goal.getAll(course_id)
+
+            course_payload = {"id" : course_response.id, "title" : course_response.title, "created" : course_response.created, "description" : course_response.description}
+
+            lesson_payload = []
+            for les in lessons:
+                lesson_payload.append({"id" : les.id, "title" : les.title})
+
+            textbook_payload = []
+            for tex in textbooks:
+                textbook_payload.append({"id" : tex.id, "isbn" : tex.isbn, "author" :  tex.author, "title" : tex.title, "pages" : tex.pages})
+
+            payload = {'username': user.username(user_id), 'course': course_payload, 'lessons': lesson_payload, 'textbooks': textbook_payload, 'goals' : []}
+            response = jsonify(payload)
+            response = makeCORS(response, "GET")
+            return response, 201
+        else:
+            return "", 400
     except Exception as e:
         print(traceback.format_exc())
         return "", 400     
+
 
 @app.route("/api/website/<course_id>/notebook", methods=['GET']) 
 def websiteNotebook(course_id):
