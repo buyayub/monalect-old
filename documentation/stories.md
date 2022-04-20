@@ -98,7 +98,7 @@ The actual act of going through a course and studying it. The meat of the progra
 	* [ ]  As a user I want to see how long since I reviewed it so I can restudy it when necessary
 	* [ ]  As a user I want to be able to "uncomplete" a course and access it
 
-= Epic: Marketing =
+## Epic: Marketing
 
 Marketing isn't a huge focus for Monalect in the beginning, but having a (free) way to publish to various networks and 
 
