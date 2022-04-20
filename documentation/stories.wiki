@@ -1,97 +1,108 @@
-= MVP Stories =
+# MVP Stories 
 
-== Epic: Founder Stories ==
+## Epic: Founder Stories 
 
-I don't know what to name this, but this is the first thing I'm creating so that I can establish the workflow. Documentation can be saved for later, when I actually built it, but the blog, plans, and about need to be handled. It'll likely use the 
+I don't know what to name this, but this is the first thing I'm creating so that I can establish the workflow. Documentation can be saved for later, when I actually built it, but the blog, plans, and about need to be handled. It'll be a typica
 
 * [ ] Temporary landing
-	** [ ] Design
-	** [ ] Frontend Implementation
+	* [ ] Design
+	* [ ] Frontend Implementation
 * [ ] Blog
-	** [ ] Design
-	** [ ] Frontend Implementation
+	* [ ] Design
+	* [ ] Frontend Implementation
 * [ ] Documentation
 * [ ] Plans (Public to-do list)
-	** [ ] Design
-	** [ ] Frontend Implementation
+	* [ ] Design
+	* [ ] Frontend Implementation
 * [ ] About
-	** [ ] Design
-	** [ ] Frontend Implementation
+	* [ ] Design
+	* [ ] Frontend Implementation
 
-== Epic: User Creation & Management ==
+## Epic: User Creation & Management
 
 * [ ] User Creation & Management
-** [ ] [[.stories/user/form |As a user I should be able to access a form to which I can sign up.]]
-** [ ] [[.stories/user/confirm |As a user I should be able to confirm my email address]]
-** [ ] [[.stories/user/confirmAccount |As a user I should still be able to access my account without confirming my email address]]
-** [ ] [[.stories/user/loginAutomatic |As a user I should be able to automatically login once I register]]
-** [ ] [[.stories/user/login |As a user I should be able to login]]
+	* [ ] [[.stories/user/form |As a user I should be able to access a form to which I can sign up.]]
+	* [ ] [[.stories/user/confirm |As a user I should be able to confirm my email address]]
+	* [ ] [[.stories/user/confirmAccount |As a user I should still be able to access my account without confirming my email address]]
+	* [ ] [[.stories/user/loginAutomatic |As a user I should be able to automatically login once I register]]
+	* [ ] [[.stories/user/login |As a user I should be able to login]]
 
-== Epic: Course Management ==
+## Epic: Course Management
 
 * [ ] Course Management
-** [ ] As a user I should be able to define the title
-** [ ] As a user I should be able to define the description
-** [ ] As a user I should be able to manage my questions
-	*** [ ] As a user I should be able to import questions.
-	*** [ ] As a user I want to attach questions to specific lessons
-	*** [ ] As a user I want to be able to remove questions from the list if it doesn't belong
-** [ ] As a user I should be able to manage my lessons
-	*** [ ] As a user I should be able to define lesson materials
-	*** [ ] As a user I want to namelessons
-	*** [ ] As a user I want to attach course materials to lessons.
-	*** [ ] As a user I should be able to define the order of my lesssons.
-** [ ] As a user I should be able to manage my course materials
-	*** [ ] As a user I should be able to define a textbook as a course material
-		**** [ ] As a user I should be able to define the sections of a textbook
-		**** [ ] As a user I should be able to attach sections to a lesson
-		**** [ ] As a user I should be able to define the metadata of the textbook
-	*** [ ] As a user I should be able to define an article as a course material
-		**** [ ] As a user I should be able to attach an article to a lesson
-		**** [ ] As a user I should be able to upload an article
-** [ ] as a user I should be able to save my course as a draft
-** [ ] as a user I should be able to import a course template and modify it to my liking
-** [ ] as a user I should be able to export my course after creating them
-** [ ] as a user I should be able to access premade courses so I don't even have to think about creation
+* [ ] As a user I should be able to define the title
+* [ ] As a user I should be able to define the description
+* [ ] As a user I should be able to manage my questions
+	* [ ] As a user I should be able to import questions.
+	* [ ] As a user I want to attach questions to specific lessons
+	* [ ] As a user I want to be able to remove questions from the list if it doesn't belong
+* [ ] As a user I should be able to manage my lessons
+	* [ ] As a user I should be able to define lesson materials
+	* [ ] As a user I want to namelessons
+	* [ ] As a user I want to attach course materials to lessons.
+	* [ ] As a user I should be able to define the order of my lesssons.
+* [ ] As a user I should be able to manage my course materials
+	* [ ] As a user I should be able to define a textbook as a course material
+		* [ ] As a user I should be able to define the sections of a textbook
+		* [ ] As a user I should be able to attach sections to a lesson
+		* [ ] As a user I should be able to define the metadata of the textbook
+	* [ ] As a user I should be able to define an article as a course material
+		* [ ] As a user I should be able to attach an article to a lesson
+		* [ ] As a user I should be able to upload an article
+* [ ] as a user I should be able to save my course as a draft
+* [ ] as a user I should be able to import a course template and modify it to my liking
+* [ ] as a user I should be able to export my course after creating them
+* [ ] as a user I should be able to access premade courses so I don't even have to think about creation
 
-== Epic: Course Completion ==
+## Epic: Course Completion 
 
-* [ ] Course Creation
-** [ ] Notebook
-	*** [ ]  As a user I want to be able to format my notebook.
-	*** [ ]  As a user I want to be able to access my textbook while writing notes.
-	*** [ ]  As a user I want to create questions while writing notes.
-	*** [ ]  As a user I should be able to see how much words I've written.
-	*** [ ]  As a user I should be able to see progress towards certain goals. 
-** [ ]  Text Reader
-	*** [ ]  As a user I should be able to read my learning materials
-	*** [ ]  As a user I should be able to see what lesson I'm on when reading a textbook or article
-		**** [ ]  As a user I should be able to jump to pages at the start of each lesson
-	*** [ ]  As a user I should be able to access my notebook while reading
-	*** [ ]  As a user I should be able to create a question while reading
-	*** [ ]  As a user I should be able to access the last textbook I opened when I open it again
-	*** [ ]  As a user I should be able to redownload my textbook
-	*** [ ]  As a user I should be able to highlight my texts (last priority)
-** [ ]  Questions
-	*** [ ]  As a user I should be able to reassign my questions
-	*** [ ]  As a user I should be able to CRUD operations on a question
-	*** [ ]  As a user, answers should be hidden from me so I don't spoil myself everytime I want to edit questions
-	*** [ ]  As a user I should be able to create a test for these questions.
-	*** [ ]  As a user I should be able to export my questions
-	*** [ ]  As a user I should be able to review my questions
-** [ ]  Goals
-	*** [ ]  As a user I should be able to CRUD goals
-	*** [ ]  As a user I should be able to automatically receive goals after they've completed
-	*** [ ]  As a user I should be able to see my goals as I progress through them on other pages
-	*** [ ]  As a user I should see a list of my previous completed goals/accomplishments
-** [ ]  Quizzes & Exams
-	*** [ ]  As a user I should be able to quiz myself against questions without worry.
-		**** [ ]  As a user I should be able to see if I got it wrong right after I answer
-	*** [ ]  As a user I should be able to examinate myself against questions to formally measure my knowledge.
-		**** [ ]  As a user I should also be able to do practice exams to see my level without recording my mark
-		**** [ ]  As a user I shouldn't feel discouraged as I go through these questions that I quit before finishing it
-		**** [ ]  As a user I should be able to choose the number of questions from each lesson I test against
-** [ ]  Completion
-	*** [ ]  As a user I want to be able to review completed courses
-	*** [ ]  As a user I want to see how long since I reviewed it so I can restudy it when necessary
-	*** [ ]  As a user I want to be able to "uncomplete" a course and access it
+The actual act of going through a course and studying it. The meat of the program.
+
+* [ ] Course Completion
+* [ ] Notebook
+	* [ ]  As a user I want to be able to format my notebook.
+	* [ ]  As a user I want to be able to access my textbook while writing notes.
+	* [ ]  As a user I want to create questions while writing notes.
+	* [ ]  As a user I should be able to see how much words I've written.
+	* [ ]  As a user I should be able to see progress towards certain goals. 
+* [ ]  Text Reader
+	* [ ]  As a user I should be able to read my learning materials
+	* [ ]  As a user I should be able to see what lesson I'm on when reading a textbook or article
+		* [ ]  As a user I should be able to jump to pages at the start of each lesson
+	* [ ]  As a user I should be able to access my notebook while reading
+	* [ ]  As a user I should be able to create a question while reading
+	* [ ]  As a user I should be able to access the last textbook I opened when I open it again
+	* [ ]  As a user I should be able to redownload my textbook
+	* [ ]  As a user I should be able to highlight my texts (last priority)
+* [ ]  Questions
+	* [ ]  As a user I should be able to reassign my questions
+	* [ ]  As a user I should be able to CRUD operations on a question
+	* [ ]  As a user, answers should be hidden from me so I don't spoil myself everytime I want to edit questions
+	* [ ]  As a user I should be able to create a test for these questions.
+	* [ ]  As a user I should be able to export my questions
+	* [ ]  As a user I should be able to review my questions
+* [ ]  Goals
+	* [ ]  As a user I should be able to CRUD goals
+	* [ ]  As a user I should be able to automatically receive goals after they've completed
+	* [ ]  As a user I should be able to see my goals as I progress through them on other pages
+	* [ ]  As a user I should see a list of my previous completed goals/accomplishments
+* [ ]  Quizzes & Exams
+	* [ ]  As a user I should be able to quiz myself against questions without worry.
+		* [ ]  As a user I should be able to see if I got it wrong right after I answer
+	* [ ]  As a user I should be able to examinate myself against questions to formally measure my knowledge.
+		* [ ]  As a user I should also be able to do practice exams to see my level without recording my mark
+		* [ ]  As a user I shouldn't feel discouraged as I go through these questions that I quit before finishing it
+		* [ ]  As a user I should be able to choose the number of questions from each lesson I test against
+* [ ]  Completion
+	* [ ]  As a user I want to be able to review completed courses
+	* [ ]  As a user I want to see how long since I reviewed it so I can restudy it when necessary
+	* [ ]  As a user I want to be able to "uncomplete" a course and access it
+
+= Epic: Marketing =
+
+Marketing isn't a huge focus for Monalect in the beginning, but having a (free) way to publish to various networks and 
+
+* [ ] Preliminaries
+* [ ] As a marketer, frontend metadata of various pages should allow for easy discovery 
+* [ ] As a marketer, whenever a blog post is created, I'd like to have it put out to various mediums
+	+ Something like 
