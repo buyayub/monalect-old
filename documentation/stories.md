@@ -2,30 +2,78 @@
 
 ## Epic: Founder Stories 
 
-I don't know what to name this, but this is the first thing I'm creating so that I can establish the workflow. Documentation can be saved for later, when I actually built it, but the blog, plans, and about need to be handled. It'll be a typica
+I don't know what to name this, but this is the first thing I'm creating so that I can establish the workflow. Documentation can be saved for later, when I actually built it, but the blog, plans, and about need to be handled. The landing page is the 
 
-* [ ] Temporary landing
-	* [ ] Design
+* [.] Landing Page 
+	* [o] Design & Marketing
+		* [o] Content
+			* [X] [Keyword List for SEO](.stories/other/landing_keywords.md)
+			* [.] Text
+				* [X] [Eye grabber(first things users read, reel 'em in)](.stories/other/landing_headline.md)
+					* [X] Headline 
+					* [X] Supporting Copy 
+				* [ ] [Small Article (more in-depth overview of the course)](.stories/other/landing_article.md)
+					* [ ] Headline
+					* [ ] Product Description
+				* [ ] Social Existence, "The Team" (proof that i exist, makes it more human)
+				* [ ] [Features](.stories/other/landing_features.md)
+				* [ ] Tagline
+				* [ ] Initial Blogpost
+			* [.] Media
+				* [ ] Video
+				* [o] Mascot Images
+					* [ ] Wizard Studying
+					* [X] Wizard from SICP
+				* [ ] Statistics & Graphs
+		* [.] Figma Prototype
+			* [X] Logo
+			* [X] Title
+			* [ ] Login Form <- This will be disabled in production
+				* [ ] Username/Email
+				* [ ] Password
+				* [ ] Reset Password
+				* [ ] Sign-up Link
+			* [ ] Blog's Latest Posts
+			* [ ] Email Subscription Form
+			* [ ] Feature suggestions
+			* [ ] Encourage Sharing 
+			* [ ] Our Social Media Links
+			* [ ] Footer
 	* [ ] Frontend Implementation
+		* [ ] HTML generation
+		* [ ] Javascript + CSS
 * [ ] Blog
 	* [ ] Design
+		* [ ] Figma Prototype
 	* [ ] Frontend Implementation
-* [ ] Documentation
+		* [ ] HTML generation
+		* [ ] Javascript + CSS
+* [-] Documentation
 * [ ] Plans (Public to-do list)
 	* [ ] Design
+		* [ ] Figma Prototype
 	* [ ] Frontend Implementation
+		* [ ] HTML generation
+		* [ ] Javascript + CSS
 * [ ] About
 	* [ ] Design
+		* [ ] Figma Prototype
 	* [ ] Frontend Implementation
+		* [ ] HTML generation
+		* [ ] Javascript + CSS
+* [ ] Hosting
+* [ ] **MOBILE FRIENDLY AND RESPONSIVE**
+
+I might use a static site generator for this
 
 ## Epic: User Creation & Management
 
 * [ ] User Creation & Management
-	* [ ] [[.stories/user/form |As a user I should be able to access a form to which I can sign up.]]
-	* [ ] [[.stories/user/confirm |As a user I should be able to confirm my email address]]
-	* [ ] [[.stories/user/confirmAccount |As a user I should still be able to access my account without confirming my email address]]
-	* [ ] [[.stories/user/loginAutomatic |As a user I should be able to automatically login once I register]]
-	* [ ] [[.stories/user/login |As a user I should be able to login]]
+	* [ ] [As a user I should be able to access a form to which I can sign up.](.stories/user/form)
+	* [ ] [As a user I should be able to confirm my email address](.stories/user/confirm)
+	* [ ] [As a user I should still be able to access my account without confirming my email address](.stories/user/account)
+	* [ ] [As a user I should be able to automatically login once I register](.stories/user/login)
+	* [ ] [As a user I should be able to login](.stories/user/login)
 
 ## Epic: Course Management
 
@@ -103,6 +151,13 @@ The actual act of going through a course and studying it. The meat of the progra
 Marketing isn't a huge focus for Monalect in the beginning, but having a (free) way to publish to various networks and 
 
 * [ ] Preliminaries
-* [ ] As a marketer, frontend metadata of various pages should allow for easy discovery 
-* [ ] As a marketer, whenever a blog post is created, I'd like to have it put out to various mediums
-	+ Something like 
+	* [ ] As a marketer, frontend metadata of various pages should allow for easy discovery 
+		* [ ] SEO terms
+* [ ] Value and content creation
+	* [ ] As a marketer, I'd like trivial tools made to attract users
+		* [ ] As a marketer, I'd like checklists people can use to become attracted to our website
+	* [ ] As a marketer, I'd like videos made that showcase our philosophy and product
+	* [ ] [As a marketer, I'd like weekly blogposts to be easily written, as they provide value and authority to the website](.stories/marketing/blog.md)
+		* [ ] As a marketer, I'd like the ability to publish blog post at specific time
+		* [ ] As a marketer, whenever a blog post is created, I'd like to have it put out to various mediums (pun intended)
+		* [ ] As a marketer, I'd like blog posting to be fairly streamlined
