@@ -1,61 +1,23 @@
-{% extends "root.j2" %}
-{% block body %}
-	<body class="home">
-		<script src="https://www.google.com/recaptcha/api.js" defer></script>
-		<header class="home">
-			<a href="/"><img src="/static/logo.webp" alt="the monalect logo"></a>
-			<nav>
-				<ul>
-					<li><a href="/about">About</a></li>
-					<li><a href="/docs">Docs</a></li>
-					<li><a href="/contact">Contact</a></li>
-					<li><button id="login_button">Log In</button></li>
-				</ul>
-			</nav>
-		</header>
-		<form id="login" class="login">
-			<div class="form-input">
-				<label for="username">Username</label>
-				<input type="text" name="username" id="username" required>
-			</div>
-			<div class="form-input">
-				<label for="password">Password</label>
-				<input type="password" name="password" id="password" required>
-			</div>
-			<div id="login_captcha" class="g-recaptcha" data-sitekey="5LfJeYIeAAAAADHppzNesu5NUIMWscKH0OEOXwan"></div>
-			<input type="submit">
-		</form>
-		<main class="home">
-			<img src="/static/wizard.webp" alt="A wizard-looking man holding up a ball. It's from the cover of the textbook 'Structures and Interpretations of Computer Programs', a good read for the striving programmer.">
-			<article>
-				<div>
-					<p>Tired of other people's courses?</p>
-					<p>Create your own.</p>
-				</div>
-				<button id="create">Create</button>
-				<div>
-					<p>After you outline your course,</p>
-					<p>we handle the rest.</p>
-				</div>
-				<p>All you have to do is study</p>
-			</article>
-		<form id="signup" class="signup">
-			<div class="form-input">
-				<label for="username">Username</label>
-				<input type="text" name="username" id="username" required>
-			</div>
-			<div class="form-input">
-				<label for="email">Email (optional)</label>
-				<input type="email" name="email" id="email">
-			</div>
-			<div class="form-input">
-				<label for="password">Password</label>
-				<input type="password" name="password" id="password" required>
-			</div>
-			<div id="signup_captcha" class="g-recaptcha" data-sitekey="6LfJeYIeAAAAADHppzNesu5NUIMWscKH0OEOXwan"></div>
-			<button type="submit">Sign up</button>
-		</form>
-		</main>
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset = "UTF-8">
+		<meta name="viewport" content="width=device-width, heigh=device-height, initial-scale=1">
+
+		<title>Create and Study Free Online Courses for Yourself - Monalect</title>
+		<meta name="description" content="The only tool autodidacts and self learners need to study, provided free. Create and manage your own courses quickly and easily with our app.">
+
+		<link rel="icon" type="image/x-icon" href="/images/favicon.ico"> {# REMEMBER TO IMPLEMENT #}
+
+		{# MICROSOFT TILES 
+		<meta name="msapplication-square70x70logo" content="" >
+		<meta name="msapplication-square150x150logo" content="" >
+		<meta name="msapplication-wide310x150logo" content="" >
+		<meta name="msapplication-square310x310logo" content="" > #}
+
+		<link rel="canonical" href="https://www.monalect.com/">
+		<link rel="stylesheet" href="/styles/">
+	</head>
+	<body>
 	</body>
-	<script type="text/javascript" src="/static/home.js" async></script>
-{% endblock body %}
+</html>

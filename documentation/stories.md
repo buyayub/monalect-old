@@ -1,53 +1,60 @@
 # MVP Stories 
 
+## Links
+
+* [Journal](journal.md)
+ 
 ## Epic: Founder Stories 
 
 I don't know what to name this, but this is the first thing I'm creating so that I can establish the workflow. Documentation can be saved for later, when I actually built it, but the blog, plans, and about need to be handled. The landing page is the 
 
-* [.] Landing Page 
-	* [o] Design & Marketing
-		* [o] Content
-			* [X] [Keyword List for SEO](.stories/other/landing_keywords.md)
-			* [.] Text
+* [.] Pre-Launch Landing Page 
+	* [O] Design & Marketing
+		* [O] Content
+			* [o] [Keyword List for SEO](.stories/other/landing_keywords.md)
+			* [O] Text
 				* [X] [Eye grabber(first things users read, reel 'em in)](.stories/other/landing_headline.md)
 					* [X] Headline 
 					* [X] Supporting Copy 
-				* [ ] [Small Article (more in-depth overview of the course)](.stories/other/landing_article.md)
-					* [ ] Headline
-					* [ ] Product Description
-				* [ ] Social Existence, "The Team" (proof that i exist, makes it more human)
-				* [ ] [Features](.stories/other/landing_features.md)
-				* [ ] Tagline
+				* [X] [Small Article (more in-depth overview of the course)](.stories/other/landing_article.md)
+					* [X] Headline
+					* [X] Product Description
+				* [X] [Planned Features](.stories/other/landing_features.md)
 				* [ ] Initial Blogpost
-			* [.] Media
-				* [ ] Video
-				* [o] Mascot Images
-					* [ ] Wizard Studying
-					* [X] Wizard from SICP
-				* [ ] Statistics & Graphs
-		* [.] Figma Prototype
+			* [-] Media
+				* [-] Video
+				* [-] Mascot Images
+					* [-] Wizard Studying
+					* [-] Wizard from SICP
+				* [-] Statistics & Graphs
+		* [X] Figma Prototype
 			* [X] Logo
 			* [X] Title
-			* [ ] Login Form <- This will be disabled in production
-				* [ ] Username/Email
-				* [ ] Password
-				* [ ] Reset Password
-				* [ ] Sign-up Link
-			* [ ] Blog's Latest Posts
-			* [ ] Email Subscription Form
-			* [ ] Feature suggestions
-			* [ ] Encourage Sharing 
-			* [ ] Our Social Media Links
-			* [ ] Footer
+			* [-] Login Form 
+				* [-] Username/Email
+				* [-] Password
+				* [-] Reset Password
+				* [-] Sign-up Link
+			* [-] Blog's Latest Posts
+			* [X] Email Subscription Form
+			* [X] Feature suggestions
+			* [X] Encourage Sharing 
+			* [X] Our Social Media Links
+			* [X] Footer
 	* [ ] Frontend Implementation
-		* [ ] HTML generation
+		* [ ] [HTML](.stories/other/landing_html.md)
+			* [ ] Meta tags
+			* [ ] Body
 		* [ ] Javascript + CSS
+			* [ ] 
+	* [ ] Production & Backend
+		* [ ] Static generation
+		* [ ] Deployment script
+		* [ ] 
 * [ ] Blog
 	* [ ] Design
 		* [ ] Figma Prototype
 	* [ ] Frontend Implementation
-		* [ ] HTML generation
-		* [ ] Javascript + CSS
 * [-] Documentation
 * [ ] Plans (Public to-do list)
 	* [ ] Design
