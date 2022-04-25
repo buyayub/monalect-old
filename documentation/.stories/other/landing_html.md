@@ -9,3 +9,7 @@ I'm thinking of using this for the webapp too, as it basically pushes out a temp
 Then I'll just quickly write the js scripts using webpack. A script will then build the javascript, and then build the html. I shouldn't have to build the css, but if I do I'll just the script again. The server will then deploy.
 
 The reason why I'm using python and javascript together and not just javascript is because javascript's templating engines, and javascript's static site generators go for different things, and it'll be the same process anyways. I'm more familiar with python and jinja.
+
+...
+
+Carbon Design System is integrated heavily with javascript. I'm moving templating engine to javascript.

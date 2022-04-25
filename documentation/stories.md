@@ -8,7 +8,7 @@
 
 I don't know what to name this, but this is the first thing I'm creating so that I can establish the workflow. Documentation can be saved for later, when I actually built it, but the blog, plans, and about need to be handled. The landing page is the 
 
-* [.] Pre-Launch Landing Page 
+* [o] Pre-Launch Landing Page 
 	* [O] Design & Marketing
 		* [O] Content
 			* [o] [Keyword List for SEO](.stories/other/landing_keywords.md)
@@ -41,14 +41,15 @@ I don't know what to name this, but this is the first thing I'm creating so that
 			* [X] Encourage Sharing 
 			* [X] Our Social Media Links
 			* [X] Footer
-	* [ ] Frontend Implementation
-		* [ ] [HTML](.stories/other/landing_html.md)
-			* [ ] Meta tags
-			* [ ] Body
-		* [ ] Javascript + CSS
-			* [ ] 
+	* [o] Frontend Implementation
+		* [ ] Read through Sass tutorial
+		* [ ] Setup webpack
+		* [ ] Finish landing page
+			* [o] [HTML](.stories/other/landing_html.md)
+				* [X] Meta tags
+				* [ ] Body
 	* [ ] Production & Backend
-		* [ ] Static generation
+		* [ ] Static generation (moved to webpack)
 		* [ ] Deployment script
 		* [ ] 
 * [ ] Blog
